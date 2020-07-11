@@ -3,10 +3,11 @@ from gensim.models import KeyedVectors
 from contextlib import closing
 import re
 import time
+import cProfile
 
 model_location = r'D:\Datasets\IsItCorrect\fra_word_embedding_100\model.bin'
 model = KeyedVectors.load_word2vec_format(model_location,
-                                              binary=True)
+                                          binary=True)
 word_vectors = model.wv
 vocab = list(word_vectors.vocab.keys())
 
@@ -15,7 +16,7 @@ with closing(open(reddit_location, 'r', encoding='utf8')) as file:
     list_lines = file.readlines()
 
 total = 6
-bunchsize = 10000
+bunchsize = 3
 start_token = '<START>'
 end_token = '<END>'
 unknown_token = '<UNK>'
@@ -26,8 +27,7 @@ list_lines = pattern.findall(list_lines)
 
 
 def divide_list(i):
-
-    return list_lines[int(i * len(list_lines) / total): int((i + 1) * len(list_lines)-1 / total)]
+    return list_lines[int(i * len(list_lines) / total): int((i + 1) * len(list_lines) - 1 / total)]
 
 
 def getdata(list_lines, num):
@@ -35,7 +35,6 @@ def getdata(list_lines, num):
     print("Process {} started".format(num))
     clean_reddit_location = r'D:\Datasets\IsItCorrect\french_corpus\reddit_clean{}.txt'.format(num)
     punct_list = ['.', ',', '!', '?', '"']
-    unknown_token = '<UNK>'
     with closing(open(clean_reddit_location, 'w')) as file:
         bunch = []
         for line in list_lines:
@@ -76,11 +75,10 @@ def getdata(list_lines, num):
                         bunch = []
                         continue
     b = time.time()
-    print("Done for Process number {}, with time {}".format(num, b-a))
+    print("Done for Process number {}, with time {}".format(num, b - a))
 
 
 if __name__ == '__main__':
-
     divided = [divide_list(i) for i in range(total)]
     list_lines.clear()
     model = None
@@ -98,3 +96,4 @@ if __name__ == '__main__':
         process.start()
     for process in process_list:
         process.join()
+
