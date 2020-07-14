@@ -4,16 +4,6 @@ import re
 import time
 import cProfile
 
-'''def load_embeddings():
-    t_loadembed_1 = time.time()
-    model_location = r'D:\Datasets\IsItCorrect\fra_word_embedding_100\model.bin'
-    model = KeyedVectors.load_word2vec_format(model_location, binary=True)
-    vocab = list(model.vocab.keys())
-    t_loadembed_2 = time.time()
-    print("For load_embeddings, time is "(t_loadembed_2-t_loadembed_1))
-    return vocab
-'''
-
 
 def load_textfile():
     t_loadtxt_1 = time.time()
