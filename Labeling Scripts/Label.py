@@ -1,4 +1,7 @@
+"""Refer to Labeling-Technique.txt for more information"""
+
 class Label:
+
     def __init__(self, correct):
         self.correct = correct
         self.given = None

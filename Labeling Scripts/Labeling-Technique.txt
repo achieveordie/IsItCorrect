@@ -22,5 +22,5 @@ Level 3: Involves randomly exchanging relative position of 25% of the words in s
 Level 2: Involves randomly exchanging relative position of 10% of words in sentences.
 Level 1: Involves randomly exchanging relative position of 3 words in sentences.
 Level 0: Involves randomly exchanging 2 words:
-	-50%(round down) of time two adjacent words. --- 9 sentences
-	-50%(remaining) of time one word apart.  --- 9 sentences
+	->50%(round down) of time two adjacent words. --- 9 sentences
+	->50%(remaining) of time one word apart.  --- 9 sentences
