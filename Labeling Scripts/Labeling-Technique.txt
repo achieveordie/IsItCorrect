@@ -1,0 +1,26 @@
+Method to do the labeling: 
+User Defined Class as follows-
+{correct:Boolean, given_sentence:Str, correct_sentence:Str} 
+
+
+For Syntax Changing :
+
+For the purpose let's say we have 100 sample sentences in our corpus.
+1) 50% Unchanged --- 50 sentences
+2) 50% Changed --- 50 sentences
+
+-Method to do this changing:
+a) 8% of selected (round down) with Level 4 Intensity --- 4 sentences
+b) 9% of selected (round up) with level 3 Intensity --- 5 sentences
+c) 18% of selected (round down) with level 2 Intensity --- 9 sentences
+d) 28% of selected (round down) with level 1 Intensity --- 14 sentences
+e) 37% of selected (round down/remaining) with level 0 Intensity --- 18 sentences
+
+-Intensity Levels:
+Level 4: Involves randomly exchanging relative position of 50% of the words in sentences.
+Level 3: Involves randomly exchanging relative position of 25% of the words in sentences.
+Level 2: Involves randomly exchanging relative position of 10% of words in sentences.
+Level 1: Involves randomly exchanging relative position of 3 words in sentences.
+Level 0: Involves randomly exchanging 2 words:
+	-50%(round down) of time two adjacent words. --- 9 sentences
+	-50%(remaining) of time one word apart.  --- 9 sentences
