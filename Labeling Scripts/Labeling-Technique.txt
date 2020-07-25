@@ -23,4 +23,12 @@ Level 2: Involves randomly exchanging relative position of 10% of words in sente
 Level 1: Involves randomly exchanging relative position of 3 words in sentences.
 Level 0: Involves randomly exchanging 2 words:
 	->50%(round down) of time two adjacent words. --- 9 sentences
+	    ->If Length of sentence is > 20 words: misplace 5 words
+	    ->If Length of sentence is 10-20 words: misplace 3 words
+	    ->If Length of sentence is 5-10 words: misplace 2 words
+	    ->If Length of sentence is <5 words: misplace 1 word.
 	->50%(remaining) of time one word apart.  --- 9 sentences
+	    ->If Length of sentence is >30 words: misplace 3 pairs
+	    ->If length of sentence is 15-30 words: misplace 2 pairs
+	    ->If length of sentence is <15 words: misplace 1 pair.
+	 Misplacing forward and backward takes place with equal probabilities.
