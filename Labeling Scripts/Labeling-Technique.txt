@@ -17,9 +17,9 @@ d) 28% of selected (round down) with level 1 Intensity --- 14 sentences
 e) 37% of selected (round down/remaining) with level 0 Intensity --- 18 sentences
 
 -Intensity Levels:
-Level 4: Involves randomly exchanging relative position of 50% of the words in sentences.
-Level 3: Involves randomly exchanging relative position of 25% of the words in sentences.
-Level 2: Involves randomly exchanging relative position of 10% of words in sentences.
+Level 4: Involves randomly exchanging relative position of 75% of the words in sentences.
+Level 3: Involves randomly exchanging relative position of 50% of the words in sentences.
+Level 2: Involves randomly exchanging relative position of 25% of words in sentences.
 Level 1: Involves randomly exchanging relative position of 3 words in sentences.
     ->If Length of sentence is > 40 words: replace 2*3 words in both [0,length//2] and [length//2, length]
     ->If Length of sentence is 21-40 words: replace 1*3 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]

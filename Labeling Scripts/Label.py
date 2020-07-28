@@ -21,8 +21,8 @@ class Label:
                "actual:{}".format(self.actual) + "}"
 
     def __repr__(self):
-        return str("{" + "correct:{}, ".format(self.correct) + \
-                   "given:{}, ".format(self.given) + \
+        return str("{" + "correct:{}, ".format(self.correct) +
+                   "given:{}, ".format(self.given) +
                    "actual:{}".format(self.actual) + "}")
 
     def getList(self):

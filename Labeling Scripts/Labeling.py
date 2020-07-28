@@ -27,7 +27,7 @@ def swap_adjacent(line, k, int_range):  # for intensity_0
     return line
 
 
-def three_words_swap(line, times): # for intensity_1
+def three_words_swap(line, times):  # for intensity_1
     int_range = [i for i in range(len(line))]
     for time in range(times):
         choices = random.choices(int_range, k=3)
@@ -52,9 +52,6 @@ def change_or_no(lines):
 
 def change_intensity(lines):
     t_change_i_start = time.time()
-    dict_choice = {
-        'Intensity {}'.format(i): 0 for i in range(5)
-    }
     for i in range(len(lines)):
         choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
         if choice == 1:
@@ -67,6 +64,9 @@ def change_intensity(lines):
             lines[i] = intensity_4(lines[i])
         else:
             lines[i] = intensity_0(lines[i])
+    t_change_i_end = time.time()
+    print("time taken for change_intensity ", t_change_i_end-t_change_i_start)
+    return lines
 
 
 def intensity_0(line):
@@ -95,10 +95,11 @@ def intensity_0(line):
                 changed = swap_apart(line, 1, int_range)
         label = Label(False)
         label.assign(" ".join(correct_line), " ".join(changed))
-        return label
+        return str(label)
 
 
 def intensity_1(line):
+    print(line)
     if line[0]:
         correct_line = line[1].split(" ")[1:-1]  # remove <START> and <END>
         len_sen = len(correct_line)
@@ -127,25 +128,74 @@ def intensity_1(line):
                 answer = answer + " " + " ".join(value)
         label = Label(False)
         label.assign(" ".join(correct_line), answer)
-        return label
+        return str(label)
 
 
 def intensity_2(line):
     if line[0]:
-        print(line[1])
-    return line
+        correct_line = line[1].split(" ")[1:-1]
+        len_sen = len(correct_line)
+        line = copy.copy(correct_line)
+        init_range = [i for i in range(len_sen)]
+        correct_line.insert(0, '<START>')
+        correct_line.append('<END>')
+        num_words_random = round(len_sen * 0.25)
+        choices = random.choices(init_range, k=num_words_random)
+        for i in range(len(choices) // 2):
+            line[choices[-(i + 1)]], line[choices[i]] = line[choices[i]], line[choices[-(i + 1)]]
+        line.insert(0, '<START>')
+        line.append('<END>')
+        label = Label(False)
+        label.assign(" ".join(correct_line), " ".join(line))
+        return str(label)
 
 
 def intensity_3(line):
     if line[0]:
-        print(line[1])
-    return line
+        correct_line = line[1].split(" ")[1:-1]
+        len_sen = len(correct_line)
+        line = copy.copy(correct_line)
+        init_range = [i for i in range(len_sen)]
+        correct_line.insert(0, '<START>')
+        correct_line.append('<END>')
+        num_words_random = round(len_sen * 0.50)
+        choices = random.choices(init_range, k=num_words_random)
+        for i in range(len(choices) // 2):
+            line[choices[-(i + 1)]], line[choices[i]] = line[choices[i]], line[choices[-(i + 1)]]
+        line.insert(0, '<START>')
+        line.append('<END>')
+        label = Label(False)
+        label.assign(" ".join(correct_line), " ".join(line))
+        return str(label)
 
 
 def intensity_4(line):
     if line[0]:
-        print(line[1])
-    return line
+        correct_line = line[1].split(" ")[1:-1]
+        len_sen = len(correct_line)
+        line = copy.copy(correct_line)
+        init_range = [i for i in range(len_sen)]
+        correct_line.insert(0, '<START>')
+        correct_line.append('<END>')
+        num_words_random = round(len_sen * 0.75)
+        choices = random.choices(init_range, k=num_words_random)
+        for i in range(len(choices) // 2):
+            line[choices[-(i + 1)]], line[choices[i]] = line[choices[i]], line[choices[-(i + 1)]]
+        line.insert(0, '<START>')
+        line.append('<END>')
+        label = Label(False)
+        label.assign(" ".join(correct_line), " ".join(line))
+        return str(label)
+
+
+def convert_to_label(lines):
+    label_list = []
+    for line in lines:
+        if not line[0]:
+            label = Label(True)
+            label.assign(line[1])
+            label_list.append(str(label))
+    return label_list
 
 
 if __name__ == '__main__':
@@ -154,11 +204,11 @@ if __name__ == '__main__':
         lines = file.readlines()
         lines = pattern.findall(lines[0])
         print("Total number of lines are, ", len(lines))
-        len_dict = {}
-        for line in lines:
-            try:
-                len_dict[len(line.split(" "))] += 1
-            except KeyError:
-                len_dict[len(line.split(" "))] = 1
+
     lines = change_or_no(lines)
-    change_intensity(lines[:len(lines) // 2])
+    lines[:len(lines) // 2] = change_intensity(lines[:len(lines) // 2])
+    lines[len(lines)//2:] = convert_to_label(lines[len(lines)//2:])
+
+    with closing(open(Path(r'D:/Datasets/IsItCorrect/testing_random.txt'),
+                      'w', encoding="utf8")) as file:
+        file.writelines(lines)
