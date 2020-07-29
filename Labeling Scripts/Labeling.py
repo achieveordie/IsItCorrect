@@ -5,6 +5,7 @@ import re
 import random
 from Label import Label
 import copy
+import pickle
 
 
 def swap_apart(line, k, int_range):     # for intensity_0
@@ -53,20 +54,27 @@ def change_or_no(lines):
 def change_intensity(lines):
     t_change_i_start = time.time()
     for i in range(len(lines)):
-        choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
-        if choice == 1:
-            lines[i] = intensity_1(lines[i])
-        elif choice == 2:
-            lines[i] = intensity_2(lines[i])
-        elif choice == 3:
-            lines[i] = intensity_3(lines[i])
-        elif choice == 4:
-            lines[i] = intensity_4(lines[i])
-        else:
-            lines[i] = intensity_0(lines[i])
-    t_change_i_end = time.time()
-    print("time taken for change_intensity ", t_change_i_end-t_change_i_start)
+        if MinLengthQualify(lines[i]):
+            choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
+            if choice == 1:
+                lines[i] = intensity_1(lines[i])
+            elif choice == 2:
+                lines[i] = intensity_2(lines[i])
+            elif choice == 3:
+                lines[i] = intensity_3(lines[i])
+            elif choice == 4:
+                lines[i] = intensity_4(lines[i])
+            else:
+                lines[i] = intensity_0(lines[i])
+        t_change_i_end = time.time()
+        print("time taken for change_intensity ", t_change_i_end-t_change_i_start)
+    else:
+        pass
     return lines
+
+
+def MinLengthQualify(correct_line):
+    return len(correct_line[1].split(" ")) > 5
 
 
 def intensity_0(line):
@@ -83,6 +91,7 @@ def intensity_0(line):
             elif 10 > len_sen >= 5:
                 changed = swap_adjacent(line, 2, int_range)
             else:
+                print(line)
                 changed = swap_adjacent(line, 1, int_range)
         else:
             int_range[0] += 1
@@ -95,11 +104,10 @@ def intensity_0(line):
                 changed = swap_apart(line, 1, int_range)
         label = Label(False)
         label.assign(" ".join(correct_line), " ".join(changed))
-        return str(label)
+        return label
 
 
 def intensity_1(line):
-    print(line)
     if line[0]:
         correct_line = line[1].split(" ")[1:-1]  # remove <START> and <END>
         len_sen = len(correct_line)
@@ -108,7 +116,7 @@ def intensity_1(line):
         correct_line.append('<END>')
         if len_sen > 40:
             changed = three_words_swap(line[:len_sen // 2], 2)
-            changed.append(three_words_swap(line[len_sen // 2, :], 2))
+            changed.append(three_words_swap(line[len_sen // 2:], 2))
         elif 40 >= len_sen > 20:
             changed = three_words_swap(line[:len_sen // 3], 1)
             changed.append(three_words_swap(line[len_sen // 3:2 * len_sen // 3], 1))
@@ -128,7 +136,7 @@ def intensity_1(line):
                 answer = answer + " " + " ".join(value)
         label = Label(False)
         label.assign(" ".join(correct_line), answer)
-        return str(label)
+        return label
 
 
 def intensity_2(line):
@@ -147,7 +155,7 @@ def intensity_2(line):
         line.append('<END>')
         label = Label(False)
         label.assign(" ".join(correct_line), " ".join(line))
-        return str(label)
+        return label
 
 
 def intensity_3(line):
@@ -166,7 +174,7 @@ def intensity_3(line):
         line.append('<END>')
         label = Label(False)
         label.assign(" ".join(correct_line), " ".join(line))
-        return str(label)
+        return label
 
 
 def intensity_4(line):
@@ -185,7 +193,7 @@ def intensity_4(line):
         line.append('<END>')
         label = Label(False)
         label.assign(" ".join(correct_line), " ".join(line))
-        return str(label)
+        return label
 
 
 def convert_to_label(lines):
@@ -208,7 +216,25 @@ if __name__ == '__main__':
     lines = change_or_no(lines)
     lines[:len(lines) // 2] = change_intensity(lines[:len(lines) // 2])
     lines[len(lines)//2:] = convert_to_label(lines[len(lines)//2:])
+    db_train = {}
 
-    with closing(open(Path(r'D:/Datasets/IsItCorrect/testing_random.txt'),
-                      'w', encoding="utf8")) as file:
-        file.writelines(lines)
+    with closing(open(Path(r'D:/Datasets/IsItCorrect/small_train.pkl'),
+                      'ab')) as file:
+        for i, line in enumerate(lines[::2]):
+            db_train[i] = {
+                "type": "train",
+                "value": line
+            }
+        pickle.dump(db_train, file)
+
+    db_train = {}       # clean some memory
+
+    db_test = {}
+    with closing(open(Path(r'D:/Datasets/IsItCorrect/small_test.pkl'),
+                      'ab')) as file:
+        for i, line in enumerate(lines[::2]):
+            db_test[i] = {
+                "type": "validate",
+                "value": line
+            }
+        pickle.dump(db_test, file)
