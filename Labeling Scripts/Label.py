@@ -36,3 +36,12 @@ class Label:
             for i in range(len(a)):
                 if a[i] != g[i]:
                     print("Difference at ", i+1, "\n 'In actual': ", a[i], ", 'In given': ", g[i])
+
+    def store_dict(self):
+        label = 1 if self.correct else 0
+        dictionary = {
+            "label": label,
+            "actual": self.actual,
+            "given": self.given
+        }
+        return dictionary

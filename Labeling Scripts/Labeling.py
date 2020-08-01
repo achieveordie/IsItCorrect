@@ -66,10 +66,10 @@ def change_intensity(lines):
                 lines[i] = intensity_4(lines[i])
             else:
                 lines[i] = intensity_0(lines[i])
-        t_change_i_end = time.time()
-        print("time taken for change_intensity ", t_change_i_end-t_change_i_start)
-    else:
-        pass
+        else:
+            pass
+    t_change_i_end = time.time()
+    print("time taken for change_intensity ", t_change_i_end - t_change_i_start)
     return lines
 
 
@@ -202,7 +202,7 @@ def convert_to_label(lines):
         if not line[0]:
             label = Label(True)
             label.assign(line[1])
-            label_list.append(str(label))
+            label_list.append(label)
     return label_list
 
 
@@ -214,27 +214,33 @@ if __name__ == '__main__':
         print("Total number of lines are, ", len(lines))
 
     lines = change_or_no(lines)
+    print("Length of lines ",len(lines))
     lines[:len(lines) // 2] = change_intensity(lines[:len(lines) // 2])
+    print("Length of part_1", len(lines))
     lines[len(lines)//2:] = convert_to_label(lines[len(lines)//2:])
+    print("Length of part_2", len(lines))
     db_train = {}
-
-    with closing(open(Path(r'D:/Datasets/IsItCorrect/small_train.pkl'),
+    remove_index = 0
+    with closing(open(Path(r'D:/Datasets/IsItCorrect/sample_train.pkl'),
                       'ab')) as file:
         for i, line in enumerate(lines[::2]):
-            db_train[i] = {
-                "type": "train",
-                "value": line
-            }
+            if type(line) in [tuple, str]:
+                remove_index += 1
+                pass      # Minimum length must have been less than the condition
+            else:
+                db_train[i-remove_index] = line.store_dict()
         pickle.dump(db_train, file)
 
     db_train = {}       # clean some memory
 
     db_test = {}
-    with closing(open(Path(r'D:/Datasets/IsItCorrect/small_test.pkl'),
+    remove_index = 0
+    with closing(open(Path(r'D:/Datasets/IsItCorrect/sample_test.pkl'),
                       'ab')) as file:
-        for i, line in enumerate(lines[::2]):
-            db_test[i] = {
-                "type": "validate",
-                "value": line
-            }
+        for i, line in enumerate(lines[1::2]):
+            if type(line) in [tuple, str]:
+                remove_index += 1
+                pass    # Minimum length must have been less than the condition
+            else:
+                db_test[i - remove_index] = line.store_dict()
         pickle.dump(db_test, file)
