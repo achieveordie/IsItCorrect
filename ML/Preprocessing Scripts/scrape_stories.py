@@ -38,7 +38,7 @@ for url in url_list:
 
 pdf_location = r'C:\Users\Sagar Mishra\Downloads'
 file_locations = [os.path.join(pdf_location, 'La Grande Aventure.pdf'),
-         os.path.join(pdf_location, 'La société.pdf')]
+                  os.path.join(pdf_location, 'La société.pdf')]
 
 for file_location in file_locations:
     with open(file_location, 'rb') as file:
