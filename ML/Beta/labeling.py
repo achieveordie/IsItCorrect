@@ -202,7 +202,7 @@ def store_label1(lines):
 
 if __name__ == '__main__':
     pattern = re.compile("<START>.*?<END>")
-    with closing(open(r"D:\Datasets\IsItCorrect\testing-new.txt", 'r', encoding='utf-8')) as file:
+    with closing(open(r"D:\Datasets\IsItCorrect\testing-small.txt", 'r', encoding='utf-8')) as file:
         lines = file.readlines()
         lines = pattern.findall(lines[0])
         print("Total number of lines, ", len(lines))
@@ -218,7 +218,7 @@ if __name__ == '__main__':
         #     print("label_0 {}:".format(i), label_0[i])
         #     print("label_1 {}:".format(i), label_1[i])
         db_train = {}
-        with closing(open(Path(r'D:/Datasets/IsItCorrect/beta_sample_train.pkl'),
+        with closing(open(Path(r'D:/Datasets/IsItCorrect/beta_sample_train_small.pkl'),
                           'ab')) as file:
             for i, line in enumerate(label_0 + label_1):
                 db_train[i] = line.store_dict()

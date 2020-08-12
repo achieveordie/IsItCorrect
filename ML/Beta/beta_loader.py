@@ -21,14 +21,18 @@ def load_pickle(location):
         return pickle.load(file)
 
 
-save_location = r"D:\Datasets\IsItCorrect"
-train_location = os.path.join(save_location, "beta_sample_train.pkl")
+def get_data(location):
+    train = load_pickle(location)
+    train = CustomLoader(train)
+    trainloader = DataLoader(train, batch_size=2, shuffle=True)
 
-train = load_pickle(train_location)
+    return trainloader
+# for i in iter(trainloader):
+#     print(i)
+#     break
 
-train = CustomLoader(train)
 
-trainloader = DataLoader(train, batch_size=2, shuffle=True)
-for i in iter(trainloader):
-    print(i)
-    break
+def get_pickle_location():
+    save_location = r"D:\Datasets\IsItCorrect"
+    train_location = os.path.join(save_location, "beta_sample_train_small.pkl")
+    return train_location
