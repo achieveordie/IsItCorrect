@@ -38,8 +38,7 @@ color: black;
     height: 50rem;
     position: relative;
     border-bottom: 1px solid transparent;
-} 
-
+}
 .text-on-image {
     position: absolute;
     top: 35%;
@@ -143,7 +142,7 @@ color: black;
     padding-top: 0;
 }
 .enter {
-    padding: 0 0rem 0 15rem;
+    padding: 0 0 0 15rem;
     font-size: 1.6rem;
     font-weight: 500;
 }
@@ -198,8 +197,8 @@ color: black;
 
 /*-----contact-----*/
 .contact {
-    padding: 4rem 0 4rem;  
-    border-bottom: 1px solid transparent; 
+    padding: 4rem 0;
+    border-bottom: 1px solid transparent;
 }
 .row .contact-para {
     font-size: 1.3rem;
