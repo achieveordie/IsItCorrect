@@ -3,11 +3,13 @@ import time
 from beta_loader import get_pickle_location, get_data
 from custom_model import getCustomModel
 from transformers import CamembertTokenizer
+from tqdm import tqdm
 
 cuda0 = torch.device('cuda:0')
 model = getCustomModel().to(cuda0)
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(params=model.parameters(), lr=1e-05)
+save_model_location = r"D:\Datasets\IsItCorrect\model\model_actual.pth"
 
 
 def train(epoch, x, actual):
@@ -25,8 +27,7 @@ def train(epoch, x, actual):
 
 
 def epochs(num_epochs, trainloader):
-    time_start = time.time()
-    for epoch in range(num_epochs):
+    for epoch in tqdm(range(num_epochs)):
         iter_trainloader = iter(trainloader)
         counter = 0
         for data in iter_trainloader:
@@ -38,16 +39,24 @@ def epochs(num_epochs, trainloader):
             data["label"] = torch.tensor(data["label"], device=cuda0)
             loss = train(epoch, data["sentence"], data["label"])
             counter += 1
-            if counter % 10 == 0:
+            if counter % 100 == 0:
                 print(loss)
-        print("Done for Epoch number {}".format(epoch))
-    time_end = time.time()
-    print("Total Time Taken: ", time_end-time_start)
+        print("Done for Epoch number {}".format(epoch + 1))
+    print("Saving Model to {}".format(save_model_location))
+    torch.save(model.state_dict(), save_model_location)
 
 
 if __name__ == '__main__':
+    time_start = time.time()
     tokenizer_location = r"D:\Datasets\camembert-base\sentencepiece.bpe.model"
     tokenizer = CamembertTokenizer.from_pretrained(tokenizer_location)
     pickle_location = get_pickle_location()
     trainloader = get_data(pickle_location)
-    epochs(50, trainloader)
+    epochs(25, trainloader)
+    time_end = time.time()
+    print("Total Time Taken For training: ", time_end - time_start)
+
+    # print("Now begins the evaluation: ")
+    # time_eval_start = time.time()
+
+
