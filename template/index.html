@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=display-width, initial-scale= 1">
-    <title>Gupta Kirana</title>
+    <title>IsItCorrect</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="../static/style/style.css">
     <script src="https://use.fontawesome.com/177d38c421.js"></script>
 
 </head>
@@ -22,7 +22,7 @@
                 <nav class="navbar navbar-expand-md fixed-top" id='na'>
                     <div class="container-fluid">
                         <a class="navbar-brand" href="#" style="color: white;">
-                            <img src="images/code.png" alt="LOGO" style="width: 3rem; height: 3rem;"> SY
+                            <img src="../static/images/ISITCORRECT16-1.png" alt="LOGO" style="width: 5rem; height: 3rem;">
                         </a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse"
                             data-target="#navbarResponsive">
@@ -106,20 +106,20 @@
                     (Please write the sentence in the box below and click submit when ready)
                 </p>
                 <div class="main-form">
-                    <form action="#" method="POST">
+                    <form action="{{ url_for(predict) }}" method="POST">
                         <div class="row">
                             <div class="col-md-4 col-lg-4 col-sm-12 enter">
                                 <label for="sentence-here">Enter sentence here :- </label>
                                 <div class="enter-heading-underline"></div>
                             </div>
                             <div class="col-md-8 col-lg-8 col-sm-12 text-area">
-                                <textarea class="form-input" id="sentence-here" name="sentence-here" required>
-                                    placeholder="Write Here..."
-                                    style="height: 60px; width: 500px; background: rgba(255,255,255,0.3); color: white;"></textarea>
+                                <textarea class="form-input" id="sentence-here" name="sentence-here" required placeholder="Write Here..." style="height: 60px; width: 500px; background: rgba(255,255,255,0.3); color: white;"></textarea>
                                 <br>
                                 <button class="bttn " type="submit" value="Submit">SUBMIT</button>
                             </div>
                         </div>
+
+                        <p> {{ prediction_text }} </p>
 
                     </form>
                 </div>
@@ -140,7 +140,7 @@
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <div class="row">
                             <div class="col-md-6 col-lg-6 col-sm-12 profile-image">
-                                <img src="images/yash-1.jpg" alt="YASH GUPTA">
+                                <img src="../static/images/yash-1.jpg" alt="YASH GUPTA">
                             </div>
                             <div class="col-md-6 col-lg-6 col-sm-12">
                                 <h3 class="profile-heading">Yash Gupta</h3>
@@ -155,7 +155,7 @@
                     <div class="col-md-6 col-lg-6 col-sm-12">
                         <div class="row">
                             <div class="col-md-6 col-lg-6 col-sm-12 profile-image">
-                                <img src="images/sagar.jpg" alt="SAGAR MISHRA">
+                                <img src="../static/images/sagar.jpg" alt="SAGAR MISHRA">
                             </div>
                             <div class="col-md-6 col-lg-6 col-sm-12">
                                 <h3 class="profile-heading">Sagar Mishra</h3>
@@ -244,6 +244,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script src="script/script.js"></script>
+    <script src="../static/script/script.js"></script>
 
 </body>
