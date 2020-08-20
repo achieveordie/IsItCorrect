@@ -5,6 +5,10 @@ import re
 import random
 import pickle
 
+read_location = r"D:\Datasets\IsItCorrect\parsed_text.txt"
+save_train_pickle_location = r'D:/Datasets/IsItCorrect/beta_train.pkl'
+save_validate_pickle_location = r"D:/Datasets/IsItCorrect/beta_validate.pkl"
+
 
 class Label:
 
@@ -35,7 +39,7 @@ class Label:
         return dictionary
 
 
-def swap_apart(line, k, int_range):     # for intensity_0
+def swap_apart(line, k, int_range):  # for intensity_0
     choices = random.choices(int_range, k=k)
     for i in choices:
         if random.randint(0, 1):
@@ -90,7 +94,7 @@ def intensity_0(line):
     line = line[7:-5].split(" ")
     len_sen = len(line)
     int_range = [i for i in range(1, len_sen - 2)]
-    if random.randint(0, 1):    # choose adjacent if 1
+    if random.randint(0, 1):  # choose adjacent if 1
         if len_sen > 20:
             line = swap_adjacent(line, 5, int_range)
         elif 20 >= len_sen >= 10:
@@ -202,7 +206,7 @@ def store_label1(lines):
 
 if __name__ == '__main__':
     pattern = re.compile("<START>.*?<END>")
-    with closing(open(r"D:\Datasets\IsItCorrect\testing-small.txt", 'r', encoding='utf-8')) as file:
+    with closing(open(read_location, 'r', encoding='utf-8')) as file:
         lines = file.readlines()
         lines = pattern.findall(lines[0])
         print("Total number of lines, ", len(lines))
@@ -217,12 +221,27 @@ if __name__ == '__main__':
         # for i in range(15):
         #     print("label_0 {}:".format(i), label_0[i])
         #     print("label_1 {}:".format(i), label_1[i])
-        db_train = {}
-        with closing(open(Path(r'D:/Datasets/IsItCorrect/beta_sample_train_small.pkl'),
-                          'ab')) as file:
-            for i, line in enumerate(label_0 + label_1):
-                db_train[i] = line.store_dict()
-            pickle.dump(db_train, file)
+    assert len(label_0) == len(label_1)  # should have equal length
+    db_train = {}
+    db_validate = {}
+    with closing(open(Path(save_train_pickle_location),
+                      'ab')) as file:
+        for i in range(0, int(len(label_0) * 0.8), 2):
+            db_train[i] = label_0[i].store_dict()
+            db_train[i + 1] = label_1[i].store_dict()
 
+        pickle.dump(db_train, file)
 
+        # for i in range(0, len(db_train)-1, 2):
+        #     print(db_train[i])
+        #     print(db_train[i+1])
+        #     print("\n\n")
+    db_train = {}
+    with closing(open(Path(save_validate_pickle_location),
+                      "ab")) as file:
+        start_from = int(len(label_0) * 0.8)
+        for i in range(start_from, len(label_0), 2):
+            db_validate[i - start_from] = label_0[i].store_dict()
+            db_validate[i - start_from + 1] = label_1[i].store_dict()
 
+        pickle.dump(db_validate, file)

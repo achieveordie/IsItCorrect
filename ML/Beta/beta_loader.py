@@ -24,7 +24,7 @@ def load_pickle(location):
 def get_data(location):
     train = load_pickle(location)
     train = CustomLoader(train)
-    trainloader = DataLoader(train, batch_size=2, shuffle=True)
+    trainloader = DataLoader(train, batch_size=6, shuffle=False)
 
     return trainloader
 # for i in iter(trainloader):
@@ -34,5 +34,5 @@ def get_data(location):
 
 def get_pickle_location():
     save_location = r"D:\Datasets\IsItCorrect"
-    train_location = os.path.join(save_location, "beta_sample_train_small.pkl")
+    train_location = os.path.join(save_location, "beta_train.pkl")
     return train_location
