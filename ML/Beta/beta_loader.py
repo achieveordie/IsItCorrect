@@ -24,7 +24,7 @@ def load_pickle(location):
 def get_data(location):
     train = load_pickle(location)
     train = CustomLoader(train)
-    trainloader = DataLoader(train, batch_size=6, shuffle=False)
+    trainloader = DataLoader(train, batch_size=16, shuffle=False)
 
     return trainloader
 # for i in iter(trainloader):

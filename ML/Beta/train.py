@@ -4,6 +4,9 @@ from beta_loader import get_pickle_location, get_data
 from custom_model import getCustomModel
 from transformers import CamembertTokenizer
 from tqdm import tqdm
+from pprint import pformat
+import gc
+
 
 cuda0 = torch.device('cuda:0')
 model = getCustomModel().to(cuda0)
@@ -29,8 +32,15 @@ def train(epoch, x, actual):
 def epochs(num_epochs, trainloader):
     for epoch in tqdm(range(num_epochs)):
         iter_trainloader = iter(trainloader)
-        counter = 0
-        for data in iter_trainloader:
+        print("----------------SPOT-1------------------------------")
+        for obj in gc.get_objects():
+            try:
+                if torch.is_tensor(obj) or hasattr((obj, "data") and torch.is_tensor(obj.data)):
+                    print(type(obj), obj.size())
+            except:
+                pass
+
+        for counter, data in enumerate(iter_trainloader):
             data["sentence"] = tokenizer(data["sentence"], padding=True)
             data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
                                                          dtype=torch.long, device=cuda0)
@@ -38,9 +48,34 @@ def epochs(num_epochs, trainloader):
                                                               device=cuda0)
             data["label"] = torch.tensor(data["label"], device=cuda0)
             loss = train(epoch, data["sentence"], data["label"])
-            counter += 1
+            print("----------------SPOT-2------------------------------")
+            for obj in gc.get_objects():
+                try:
+                    if torch.is_tensor(obj) or (hasattr(obj, "data") and torch.is_tensor(obj["data"])):
+                        print(type(obj), obj.size())
+                except:
+                    pass
+
             if counter % 100 == 0:
                 print(loss)
+                with open(r"memory\memory_data.txt", "a") as file:
+                    stats = torch.cuda.memory_stats("cuda:0")
+                    file.write(pformat(stats))
+                    file.write("\n")
+                with open(r"memory\memory_summary.txt", "a") as file:
+                    stats = torch.cuda.memory_summary("cuda:0")
+                    file.write(pformat({"counter": counter, "summary": stats}))
+                    file.write("\n")
+            del data["sentence"], data["label"]
+            torch.cuda.empty_cache()
+            gc.collect()
+            print("----------------SPOT-3------------------------------")
+            for obj in gc.get_objects():
+                try:
+                    if torch.is_tensor(obj) or (hasattr(obj, "data") and torch.is_tensor(obj["data"])):
+                        print(type(obj), obj.size())
+                except:
+                    pass
         print("Done for Epoch number {}".format(epoch + 1))
     print("Saving Model to {}".format(save_model_location))
     torch.save(model.state_dict(), save_model_location)
