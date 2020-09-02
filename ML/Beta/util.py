@@ -11,7 +11,7 @@ def getConfiguration():
         "hidden_act": "gelu",
         "hidden_dropout_prob": 0.1,
         "attention_probs_dropout_prob": 0.1,
-        "max_position_embeddings": 512,
+        "max_position_embeddings": 2048,    # Was 512
     }
     return configuration
 

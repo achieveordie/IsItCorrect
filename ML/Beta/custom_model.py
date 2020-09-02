@@ -6,9 +6,13 @@ class Camembert(torch.nn.Module):
     def __init__(self, cam_model):
         super(Camembert, self).__init__()
         self.l1 = cam_model
+        for param in cam_model.parameters():
+            param.requires_grad = False
         self.l2 = torch.nn.Dropout(0.1)
-        self.l3 = torch.nn.Linear(768, 384)
-        self.l4 = torch.nn.Linear(384, 2)
+        self.l3 = torch.nn.Linear(768, 576)
+        self.l4 = torch.nn.Dropout(0.2)
+        self.l5 = torch.nn.Linear(576, 384)
+        self.l6 = torch.nn.Linear(384, 2)
 
     def forward(self, ids, mask):
         _, output = self.l1(ids, attention_mask=mask)
