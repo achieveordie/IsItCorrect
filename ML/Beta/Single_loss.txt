@@ -1,0 +1,400 @@
+tensor(0.7022, grad_fn=<NllLossBackward>)
+Done for Epoch number 0
+tensor(0.6860, grad_fn=<NllLossBackward>)
+Done for Epoch number 1
+tensor(0.6923, grad_fn=<NllLossBackward>)
+Done for Epoch number 2
+tensor(0.7102, grad_fn=<NllLossBackward>)
+Done for Epoch number 3
+tensor(0.6869, grad_fn=<NllLossBackward>)
+Done for Epoch number 4
+tensor(0.6787, grad_fn=<NllLossBackward>)
+Done for Epoch number 5
+tensor(0.6718, grad_fn=<NllLossBackward>)
+Done for Epoch number 6
+tensor(0.6821, grad_fn=<NllLossBackward>)
+Done for Epoch number 7
+tensor(0.6729, grad_fn=<NllLossBackward>)
+Done for Epoch number 8
+tensor(0.6792, grad_fn=<NllLossBackward>)
+Done for Epoch number 9
+tensor(0.6678, grad_fn=<NllLossBackward>)
+Done for Epoch number 10
+tensor(0.6663, grad_fn=<NllLossBackward>)
+Done for Epoch number 11
+tensor(0.6633, grad_fn=<NllLossBackward>)
+Done for Epoch number 12
+tensor(0.6745, grad_fn=<NllLossBackward>)
+Done for Epoch number 13
+tensor(0.6616, grad_fn=<NllLossBackward>)
+Done for Epoch number 14
+tensor(0.6632, grad_fn=<NllLossBackward>)
+Done for Epoch number 15
+tensor(0.6465, grad_fn=<NllLossBackward>)
+Done for Epoch number 16
+tensor(0.6664, grad_fn=<NllLossBackward>)
+Done for Epoch number 17
+tensor(0.6297, grad_fn=<NllLossBackward>)
+Done for Epoch number 18
+tensor(0.6254, grad_fn=<NllLossBackward>)
+Done for Epoch number 19
+tensor(0.6218, grad_fn=<NllLossBackward>)
+Done for Epoch number 20
+tensor(0.6213, grad_fn=<NllLossBackward>)
+Done for Epoch number 21
+tensor(0.6026, grad_fn=<NllLossBackward>)
+Done for Epoch number 22
+tensor(0.6246, grad_fn=<NllLossBackward>)
+Done for Epoch number 23
+tensor(0.6122, grad_fn=<NllLossBackward>)
+Done for Epoch number 24
+tensor(0.6103, grad_fn=<NllLossBackward>)
+Done for Epoch number 25
+tensor(0.5677, grad_fn=<NllLossBackward>)
+Done for Epoch number 26
+tensor(0.5710, grad_fn=<NllLossBackward>)
+Done for Epoch number 27
+tensor(0.5733, grad_fn=<NllLossBackward>)
+Done for Epoch number 28
+tensor(0.5541, grad_fn=<NllLossBackward>)
+Done for Epoch number 29
+tensor(0.5429, grad_fn=<NllLossBackward>)
+Done for Epoch number 30
+tensor(0.5118, grad_fn=<NllLossBackward>)
+Done for Epoch number 31
+tensor(0.5841, grad_fn=<NllLossBackward>)
+Done for Epoch number 32
+tensor(0.5084, grad_fn=<NllLossBackward>)
+Done for Epoch number 33
+tensor(0.5084, grad_fn=<NllLossBackward>)
+Done for Epoch number 34
+tensor(0.4809, grad_fn=<NllLossBackward>)
+Done for Epoch number 35
+tensor(0.4784, grad_fn=<NllLossBackward>)
+Done for Epoch number 36
+tensor(0.4811, grad_fn=<NllLossBackward>)
+Done for Epoch number 37
+tensor(0.4486, grad_fn=<NllLossBackward>)
+Done for Epoch number 38
+tensor(0.4711, grad_fn=<NllLossBackward>)
+Done for Epoch number 39
+tensor(0.4705, grad_fn=<NllLossBackward>)
+Done for Epoch number 40
+tensor(0.4592, grad_fn=<NllLossBackward>)
+Done for Epoch number 41
+tensor(0.4300, grad_fn=<NllLossBackward>)
+Done for Epoch number 42
+tensor(0.4281, grad_fn=<NllLossBackward>)
+Done for Epoch number 43
+tensor(0.3974, grad_fn=<NllLossBackward>)
+Done for Epoch number 44
+tensor(0.3864, grad_fn=<NllLossBackward>)
+Done for Epoch number 45
+tensor(0.3745, grad_fn=<NllLossBackward>)
+Done for Epoch number 46
+tensor(0.3721, grad_fn=<NllLossBackward>)
+Done for Epoch number 47
+tensor(0.3736, grad_fn=<NllLossBackward>)
+Done for Epoch number 48
+tensor(0.3566, grad_fn=<NllLossBackward>)
+Done for Epoch number 49
+tensor(0.3703, grad_fn=<NllLossBackward>)
+Done for Epoch number 50
+tensor(0.3503, grad_fn=<NllLossBackward>)
+Done for Epoch number 51
+tensor(0.3326, grad_fn=<NllLossBackward>)
+Done for Epoch number 52
+tensor(0.3179, grad_fn=<NllLossBackward>)
+Done for Epoch number 53
+tensor(0.3140, grad_fn=<NllLossBackward>)
+Done for Epoch number 54
+tensor(0.3105, grad_fn=<NllLossBackward>)
+Done for Epoch number 55
+tensor(0.3015, grad_fn=<NllLossBackward>)
+Done for Epoch number 56
+tensor(0.2906, grad_fn=<NllLossBackward>)
+Done for Epoch number 57
+tensor(0.2786, grad_fn=<NllLossBackward>)
+Done for Epoch number 58
+tensor(0.2827, grad_fn=<NllLossBackward>)
+Done for Epoch number 59
+tensor(0.2619, grad_fn=<NllLossBackward>)
+Done for Epoch number 60
+tensor(0.2984, grad_fn=<NllLossBackward>)
+Done for Epoch number 61
+tensor(0.2645, grad_fn=<NllLossBackward>)
+Done for Epoch number 62
+tensor(0.2507, grad_fn=<NllLossBackward>)
+Done for Epoch number 63
+tensor(0.2732, grad_fn=<NllLossBackward>)
+Done for Epoch number 64
+tensor(0.2387, grad_fn=<NllLossBackward>)
+Done for Epoch number 65
+tensor(0.2153, grad_fn=<NllLossBackward>)
+Done for Epoch number 66
+tensor(0.2932, grad_fn=<NllLossBackward>)
+Done for Epoch number 67
+tensor(0.2204, grad_fn=<NllLossBackward>)
+Done for Epoch number 68
+tensor(0.2117, grad_fn=<NllLossBackward>)
+Done for Epoch number 69
+tensor(0.2031, grad_fn=<NllLossBackward>)
+Done for Epoch number 70
+tensor(0.2050, grad_fn=<NllLossBackward>)
+Done for Epoch number 71
+tensor(0.1901, grad_fn=<NllLossBackward>)
+Done for Epoch number 72
+tensor(0.2065, grad_fn=<NllLossBackward>)
+Done for Epoch number 73
+tensor(0.2091, grad_fn=<NllLossBackward>)
+Done for Epoch number 74
+tensor(0.1924, grad_fn=<NllLossBackward>)
+Done for Epoch number 75
+tensor(0.2343, grad_fn=<NllLossBackward>)
+Done for Epoch number 76
+tensor(0.1643, grad_fn=<NllLossBackward>)
+Done for Epoch number 77
+tensor(0.1604, grad_fn=<NllLossBackward>)
+Done for Epoch number 78
+tensor(0.1973, grad_fn=<NllLossBackward>)
+Done for Epoch number 79
+tensor(0.1912, grad_fn=<NllLossBackward>)
+Done for Epoch number 80
+tensor(0.1626, grad_fn=<NllLossBackward>)
+Done for Epoch number 81
+tensor(0.1619, grad_fn=<NllLossBackward>)
+Done for Epoch number 82
+tensor(0.1678, grad_fn=<NllLossBackward>)
+Done for Epoch number 83
+tensor(0.1423, grad_fn=<NllLossBackward>)
+Done for Epoch number 84
+tensor(0.1533, grad_fn=<NllLossBackward>)
+Done for Epoch number 85
+tensor(0.1595, grad_fn=<NllLossBackward>)
+Done for Epoch number 86
+tensor(0.1337, grad_fn=<NllLossBackward>)
+Done for Epoch number 87
+tensor(0.1327, grad_fn=<NllLossBackward>)
+Done for Epoch number 88
+tensor(0.1250, grad_fn=<NllLossBackward>)
+Done for Epoch number 89
+tensor(0.1219, grad_fn=<NllLossBackward>)
+Done for Epoch number 90
+tensor(0.1327, grad_fn=<NllLossBackward>)
+Done for Epoch number 91
+tensor(0.1350, grad_fn=<NllLossBackward>)
+Done for Epoch number 92
+tensor(0.1228, grad_fn=<NllLossBackward>)
+Done for Epoch number 93
+tensor(0.1176, grad_fn=<NllLossBackward>)
+Done for Epoch number 94
+tensor(0.0986, grad_fn=<NllLossBackward>)
+Done for Epoch number 95
+tensor(0.1226, grad_fn=<NllLossBackward>)
+Done for Epoch number 96
+tensor(0.1052, grad_fn=<NllLossBackward>)
+Done for Epoch number 97
+tensor(0.1114, grad_fn=<NllLossBackward>)
+Done for Epoch number 98
+tensor(0.1039, grad_fn=<NllLossBackward>)
+Done for Epoch number 99
+tensor(0.0881, grad_fn=<NllLossBackward>)
+Done for Epoch number 100
+tensor(0.1063, grad_fn=<NllLossBackward>)
+Done for Epoch number 101
+tensor(0.0912, grad_fn=<NllLossBackward>)
+Done for Epoch number 102
+tensor(0.0914, grad_fn=<NllLossBackward>)
+Done for Epoch number 103
+tensor(0.0895, grad_fn=<NllLossBackward>)
+Done for Epoch number 104
+tensor(0.0921, grad_fn=<NllLossBackward>)
+Done for Epoch number 105
+tensor(0.0964, grad_fn=<NllLossBackward>)
+Done for Epoch number 106
+tensor(0.0807, grad_fn=<NllLossBackward>)
+Done for Epoch number 107
+tensor(0.0980, grad_fn=<NllLossBackward>)
+Done for Epoch number 108
+tensor(0.0748, grad_fn=<NllLossBackward>)
+Done for Epoch number 109
+tensor(0.0848, grad_fn=<NllLossBackward>)
+Done for Epoch number 110
+tensor(0.0659, grad_fn=<NllLossBackward>)
+Done for Epoch number 111
+tensor(0.0662, grad_fn=<NllLossBackward>)
+Done for Epoch number 112
+tensor(0.0860, grad_fn=<NllLossBackward>)
+Done for Epoch number 113
+tensor(0.0715, grad_fn=<NllLossBackward>)
+Done for Epoch number 114
+tensor(0.0866, grad_fn=<NllLossBackward>)
+Done for Epoch number 115
+tensor(0.0635, grad_fn=<NllLossBackward>)
+Done for Epoch number 116
+tensor(0.0710, grad_fn=<NllLossBackward>)
+Done for Epoch number 117
+tensor(0.0586, grad_fn=<NllLossBackward>)
+Done for Epoch number 118
+tensor(0.0666, grad_fn=<NllLossBackward>)
+Done for Epoch number 119
+tensor(0.0677, grad_fn=<NllLossBackward>)
+Done for Epoch number 120
+tensor(0.0623, grad_fn=<NllLossBackward>)
+Done for Epoch number 121
+tensor(0.0541, grad_fn=<NllLossBackward>)
+Done for Epoch number 122
+tensor(0.0754, grad_fn=<NllLossBackward>)
+Done for Epoch number 123
+tensor(0.0632, grad_fn=<NllLossBackward>)
+Done for Epoch number 124
+tensor(0.0539, grad_fn=<NllLossBackward>)
+Done for Epoch number 125
+tensor(0.0669, grad_fn=<NllLossBackward>)
+Done for Epoch number 126
+tensor(0.0646, grad_fn=<NllLossBackward>)
+Done for Epoch number 127
+tensor(0.0632, grad_fn=<NllLossBackward>)
+Done for Epoch number 128
+tensor(0.0481, grad_fn=<NllLossBackward>)
+Done for Epoch number 129
+tensor(0.0527, grad_fn=<NllLossBackward>)
+Done for Epoch number 130
+tensor(0.0479, grad_fn=<NllLossBackward>)
+Done for Epoch number 131
+tensor(0.0604, grad_fn=<NllLossBackward>)
+Done for Epoch number 132
+tensor(0.0474, grad_fn=<NllLossBackward>)
+Done for Epoch number 133
+tensor(0.0540, grad_fn=<NllLossBackward>)
+Done for Epoch number 134
+tensor(0.0519, grad_fn=<NllLossBackward>)
+Done for Epoch number 135
+tensor(0.0535, grad_fn=<NllLossBackward>)
+Done for Epoch number 136
+tensor(0.0490, grad_fn=<NllLossBackward>)
+Done for Epoch number 137
+tensor(0.0411, grad_fn=<NllLossBackward>)
+Done for Epoch number 138
+tensor(0.0514, grad_fn=<NllLossBackward>)
+Done for Epoch number 139
+tensor(0.0550, grad_fn=<NllLossBackward>)
+Done for Epoch number 140
+tensor(0.0594, grad_fn=<NllLossBackward>)
+Done for Epoch number 141
+tensor(0.0426, grad_fn=<NllLossBackward>)
+Done for Epoch number 142
+tensor(0.0421, grad_fn=<NllLossBackward>)
+Done for Epoch number 143
+tensor(0.0434, grad_fn=<NllLossBackward>)
+Done for Epoch number 144
+tensor(0.0363, grad_fn=<NllLossBackward>)
+Done for Epoch number 145
+tensor(0.0420, grad_fn=<NllLossBackward>)
+Done for Epoch number 146
+tensor(0.0382, grad_fn=<NllLossBackward>)
+Done for Epoch number 147
+tensor(0.0382, grad_fn=<NllLossBackward>)
+Done for Epoch number 148
+tensor(0.0388, grad_fn=<NllLossBackward>)
+Done for Epoch number 149
+tensor(0.0359, grad_fn=<NllLossBackward>)
+Done for Epoch number 150
+tensor(0.0356, grad_fn=<NllLossBackward>)
+Done for Epoch number 151
+tensor(0.0447, grad_fn=<NllLossBackward>)
+Done for Epoch number 152
+tensor(0.0407, grad_fn=<NllLossBackward>)
+Done for Epoch number 153
+tensor(0.0315, grad_fn=<NllLossBackward>)
+Done for Epoch number 154
+tensor(0.0374, grad_fn=<NllLossBackward>)
+Done for Epoch number 155
+tensor(0.0307, grad_fn=<NllLossBackward>)
+Done for Epoch number 156
+tensor(0.0333, grad_fn=<NllLossBackward>)
+Done for Epoch number 157
+tensor(0.0353, grad_fn=<NllLossBackward>)
+Done for Epoch number 158
+tensor(0.0313, grad_fn=<NllLossBackward>)
+Done for Epoch number 159
+tensor(0.0370, grad_fn=<NllLossBackward>)
+Done for Epoch number 160
+tensor(0.0287, grad_fn=<NllLossBackward>)
+Done for Epoch number 161
+tensor(0.0301, grad_fn=<NllLossBackward>)
+Done for Epoch number 162
+tensor(0.0306, grad_fn=<NllLossBackward>)
+Done for Epoch number 163
+tensor(0.0391, grad_fn=<NllLossBackward>)
+Done for Epoch number 164
+tensor(0.0327, grad_fn=<NllLossBackward>)
+Done for Epoch number 165
+tensor(0.0338, grad_fn=<NllLossBackward>)
+Done for Epoch number 166
+tensor(0.0275, grad_fn=<NllLossBackward>)
+Done for Epoch number 167
+tensor(0.0258, grad_fn=<NllLossBackward>)
+Done for Epoch number 168
+tensor(0.0335, grad_fn=<NllLossBackward>)
+Done for Epoch number 169
+tensor(0.0262, grad_fn=<NllLossBackward>)
+Done for Epoch number 170
+tensor(0.0318, grad_fn=<NllLossBackward>)
+Done for Epoch number 171
+tensor(0.0318, grad_fn=<NllLossBackward>)
+Done for Epoch number 172
+tensor(0.0252, grad_fn=<NllLossBackward>)
+Done for Epoch number 173
+tensor(0.0370, grad_fn=<NllLossBackward>)
+Done for Epoch number 174
+tensor(0.0235, grad_fn=<NllLossBackward>)
+Done for Epoch number 175
+tensor(0.0321, grad_fn=<NllLossBackward>)
+Done for Epoch number 176
+tensor(0.0293, grad_fn=<NllLossBackward>)
+Done for Epoch number 177
+tensor(0.0372, grad_fn=<NllLossBackward>)
+Done for Epoch number 178
+tensor(0.0235, grad_fn=<NllLossBackward>)
+Done for Epoch number 179
+tensor(0.0224, grad_fn=<NllLossBackward>)
+Done for Epoch number 180
+tensor(0.0247, grad_fn=<NllLossBackward>)
+Done for Epoch number 181
+tensor(0.0245, grad_fn=<NllLossBackward>)
+Done for Epoch number 182
+tensor(0.0240, grad_fn=<NllLossBackward>)
+Done for Epoch number 183
+tensor(0.0200, grad_fn=<NllLossBackward>)
+Done for Epoch number 184
+tensor(0.0243, grad_fn=<NllLossBackward>)
+Done for Epoch number 185
+tensor(0.0221, grad_fn=<NllLossBackward>)
+Done for Epoch number 186
+tensor(0.0253, grad_fn=<NllLossBackward>)
+Done for Epoch number 187
+tensor(0.0216, grad_fn=<NllLossBackward>)
+Done for Epoch number 188
+tensor(0.0255, grad_fn=<NllLossBackward>)
+Done for Epoch number 189
+tensor(0.0230, grad_fn=<NllLossBackward>)
+Done for Epoch number 190
+tensor(0.0188, grad_fn=<NllLossBackward>)
+Done for Epoch number 191
+tensor(0.0182, grad_fn=<NllLossBackward>)
+Done for Epoch number 192
+tensor(0.0207, grad_fn=<NllLossBackward>)
+Done for Epoch number 193
+tensor(0.0171, grad_fn=<NllLossBackward>)
+Done for Epoch number 194
+tensor(0.0209, grad_fn=<NllLossBackward>)
+Done for Epoch number 195
+tensor(0.0275, grad_fn=<NllLossBackward>)
+Done for Epoch number 196
+tensor(0.0184, grad_fn=<NllLossBackward>)
+Done for Epoch number 197
+tensor(0.0187, grad_fn=<NllLossBackward>)
+Done for Epoch number 198
+tensor(0.0190, grad_fn=<NllLossBackward>)
+Done for Epoch number 199

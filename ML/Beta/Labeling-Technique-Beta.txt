@@ -1,0 +1,37 @@
+Method to do the labeling:
+User Defined Class as follows-
+{given:Str, label:Int}, where label = 1 shows that sentence is correct, syntactically.
+
+For Syntax Changing :
+
+For the purpose let's say we have 100 sample sentences in our corpus.
+All 100% samples will undergo randomization and will also store the original sentence making a total of 200 sentences
+
+
+-Method to do this changing:
+a) 8% of selected (round down) with Level 4 Intensity --- 8 sentences
+b) 9% of selected (round up) with level 3 Intensity --- 10 sentences
+c) 18% of selected (round down) with level 2 Intensity --- 18 sentences
+d) 28% of selected (round down) with level 1 Intensity --- 28 sentences
+e) 37% of selected (round down/remaining) with level 0 Intensity --- 36 sentences
+
+-Intensity Levels:
+Level 4: Involves randomly exchanging relative position of 75% of the words in sentences.
+Level 3: Involves randomly exchanging relative position of 50% of the words in sentences.
+Level 2: Involves randomly exchanging relative position of 25% of words in sentences.
+Level 1: Involves randomly exchanging relative position of 3 words in sentences.
+    ->If Length of sentence is > 40 words: replace 2*3 words in both [0,length//2] and [length//2, length]
+    ->If Length of sentence is 21-40 words: replace 1*3 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
+    ->If Length of sentence is 10-20 words: replace 1*3 words in both halves
+    ->If Length of sentence is <10 words: replace any 3 words
+Level 0: Involves randomly exchanging 2 words:
+	->50%(round down) of time two adjacent words. --- 18 sentences
+	    ->If Length of sentence is > 20 words: misplace 5 words
+	    ->If Length of sentence is 10-20 words: misplace 3 words
+	    ->If Length of sentence is 5-10 words: misplace 2 words
+	    ->If Length of sentence is <5 words: misplace 1 word.
+	->50%(remaining) of time one word apart.  --- 18 sentences
+	    ->If Length of sentence is >30 words: misplace 3 pairs
+	    ->If length of sentence is 15-30 words: misplace 2 pairs
+	    ->If length of sentence is <15 words: misplace 1 pair.
+	 Misplacing forward and backward takes place with equal probabilities.
