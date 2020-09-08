@@ -13,7 +13,7 @@ model = getCustomModel().to(cuda0)
 model.train()
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(params=model.parameters(), lr=1e-05)
-save_model_location = r"D:\Datasets\IsItCorrect\model\model_actual.pth"
+save_model_location = r"D:\Datasets\IsItCorrect\model"
 
 
 def train(epoch, x, actual):
@@ -40,11 +40,14 @@ def epochs(num_epochs, trainloader):
         time_start_epoch = time.time()
         for counter, data in enumerate(iter_trainloader):
 
-            data["sentence"] = tokenizer(data["sentence"], padding=True)
+            data["sentence"] = tokenizer(data["sentence"], padding=True, max_length=512)
+            data["sentence"]["input_ids"] = list(map(lambda x: x[:512], data["sentence"]["input_ids"]))
+            data["sentence"]["attention_mask"] = list(map(lambda x: x[:512], data["sentence"]["attention_mask"]))
             data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
                                                          dtype=torch.long, device=cuda0)
             data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                               device=cuda0)
+
 
             #data["label"] = torch.tensor(data["label"], device=cuda0)
             data["label"] = data["label"].clone().detach().requires_grad_(False).cuda()
@@ -59,7 +62,7 @@ def epochs(num_epochs, trainloader):
             #     except:
             #         pass
 
-            if counter % 100 == 0:
+            if counter % 1000 == 0:
                 print(loss)
                 with open(r"memory\memory_data.txt", "a") as file:
                     stats = torch.cuda.memory_stats("cuda:0")
@@ -76,8 +79,9 @@ def epochs(num_epochs, trainloader):
 
         time_end_epoch = time.time()
         print("Done for Epoch number {}, with time {}".format(epoch + 1, time_end_epoch-time_start_epoch))
-    print("Saving Model to {}".format(save_model_location))
-    torch.save(model.state_dict(), save_model_location)
+        temp_location = save_model_location + "\\model" + str(epoch) + '_' + 'actual.pth'
+        print("Saving Model to {}".format(temp_location))
+        torch.save(model.state_dict(), temp_location)
 
 
 if __name__ == '__main__':
