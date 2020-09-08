@@ -9,7 +9,7 @@ save_file_location = os.path.join(main_location, 'parsed_text.txt')
 start_token = b"<START>"
 end_token = b"<END>"
 
-with open(main_file_location, 'r', encoding='utf-8') as file:
+with open(main_file_location, 'r', encoding='utf8') as file:
     soup = BeautifulSoup(file, 'html.parser')
 
 with open(save_file_location, 'wb') as filesave:
@@ -20,3 +20,6 @@ with open(save_file_location, 'wb') as filesave:
             filesave.write(start_token)
             filesave.write(bytes(block, 'utf-8'))
             filesave.write(end_token)
+            #filesave.write(start_token)
+            filesave.write(block)
+            #filesave.write(end_token)
