@@ -1,0 +1,26 @@
+Labeling of a sentence would be using a User-Defined Class as follows:
+{given: Str, label: Tuple}
+where the Tuple would be of fixed length (512 words) with
+correct words at correct positions will be given 1, incorrect words, either in terms of
+wrong position or incorrect grammar will labeled -1, rest of the part would be labeled 0.
+
+Eg: {given: "We used to play together.", label=(1,1,1,1,1,0,0..)}
+    {given: "We use to together play.", label=(1,-1,1,-1,-1,0,0..)}
+
+-----------------------------------------------------------------------------------
+
+Labeling of a sentence would be using a User-Defined Class as follows:
+{given: Str, label: Tuple}
+where the tuple would be of fixed length(512 words) with each word encoded as following:
+
+none = 1, seq = 2, gra-tense = 3, gra-gen = 4, gra-per = 5, gra-con = 6, ww = 7,
+abs = 8, spell = 9, ext = 10, lack of words in seq = 0(as shown above)
+
+Eq: {given: "We used to play together.", label=(1,1,1,1,1,0,0...)}
+    {given: "We use to together play.", label=(1,3,1,2,2,0,0...)}
+
+Or one can also use one-hot encoded data:
+none = [1,0,0,0,0,0,0,0,0,0]
+seq  = [0,1,0,0,0,0,0,0,0,0]
+and so on...
+This would change label from a single dimensional tuple to two dimension (np/torch)array
