@@ -1,4 +1,5 @@
-from util import loadInitialModel
+from util_withdowload import loadInitialModel   # if want to use base camembert to load as initial model
+# from util_without import loadInitialModel     # if want to use local model to load as initial model
 import torch
 
 
