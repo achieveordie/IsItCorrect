@@ -5,35 +5,6 @@ import random
 import pickle
 
 
-class Label:
-    """ Label to store the sentence as a valid label to be fed into loader """
-    def __init__(self, label):
-        self.label = label
-        self.sentence = None
-
-    def assign(self, sentence):
-        self.sentence = sentence
-
-    def __str__(self):
-        return "{" + "label:{}, ".format(self.label) + \
-               "sentence:{} ".format(self.sentence) + "}"
-
-    def __repr__(self):
-        return str("{" + "label:{}, ".format(self.label) +
-                   "sentence:{} ".format(self.sentence) + "}")
-
-    def getList(self):
-        return self.sentence.split(" ")
-
-    def store_dict(self):
-        label = 1 if self.label else 0
-        dictionary = {
-            "label": label,
-            "sentence": self.sentence
-        }
-        return dictionary
-
-
 class Sequence:
     """ Class for all Sequence-based changes, created a wrapper from labeling.py in Beta-v0.1"""
     def __init__(self, line):
