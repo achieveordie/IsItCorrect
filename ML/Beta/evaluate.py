@@ -3,6 +3,7 @@ from beta_loader import get_pickle_location, get_data
 from custom_model import getCustomModel
 from transformers import CamembertTokenizer
 import time
+from tqdm import tqdm
 
 cuda0 = torch.device("cuda:0")
 
@@ -23,6 +24,12 @@ def load_data():
     return testloader
 
 
+def calculate_f_beta(tp, fp, tn, fn, beta=0.5):
+    precision = tp/(tp + fp)
+    recall = tp/(tp + fn)
+    return ((1 + beta**2)*precision*recall)/((precision * beta**2) + recall)
+
+
 def evaluate():
     model = load_model(save_model_location)
     tokenizer = CamembertTokenizer.from_pretrained(tokenizer_location)
@@ -30,27 +37,53 @@ def evaluate():
     softmax = torch.nn.Softmax(dim=1)
     iter_loader = iter(testloader)
     correct = 0
-    for data in iter_loader:
+    tp, tn, fp, fn = 0, 0, 0, 0  # true-positive, true-negative, false-positive, false-negatives
+    print("Starting Evaluation")
+    total = 0
+    for data in tqdm(iter_loader):
         # print("Data going in: ")
         # print(data['sentence'])
 
-        data["sentence"] = tokenizer(data["sentence"], padding=True)
+        data["sentence"] = tokenizer(data["sentence"], padding=True, max_length=512)
+        data["sentence"]["input_ids"] = list(map(lambda x: x[:512], data["sentence"]["input_ids"]))
+        data["sentence"]["attention_mask"] = list(map(lambda x: x[:512], data["sentence"]["attention_mask"]))
         data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
                                                      dtype=torch.long, device=cuda0)
         data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                           device=cuda0)
+
+        # data["sentence"] = tokenizer(data["sentence"], padding=True)
+        # data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
+        #                                              dtype=torch.long, device=cuda0)
+        # data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
+        #                                                   device=cuda0)
+
         output = model(data["sentence"]["input_ids"], data["sentence"]["attention_mask"])
 
         # For all data in 1 batch (Here 2 datasets are present in a single batch)
         for i in range(len(data["label"])):
+            total += 1
             output = softmax(output)
+            actual = data["label"][i].item()
             pred = torch.argmax(output[i]).item()
             # print("Label : {}, Prediction: {}, with Probability= {}".format(data["label"][i].item(),
             #                                                                 pred,
             #                                                                 output[i][pred].item()*100.0))
-            if pred == data["label"][i].item():
+            if pred == actual:
                 correct += 1
-    print("Percentage of correct predictions: {}".format((correct/len(testloader["label"]) * 100.0)))
+            if actual: # if 1
+                if pred:
+                    tp += 1
+                else:
+                    fn += 1
+            else:
+                if pred:
+                    fp += 1
+                else:
+                    tn += 1
+
+    print("Percentage of correct predictions: {}".format((correct/total * 100.0)))
+    print("F-0.5 value is {}".format(calculate_f_beta(tp, fp, tn, fn)))
 
 
 if __name__ == "__main__":
