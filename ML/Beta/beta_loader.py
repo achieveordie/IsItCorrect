@@ -32,7 +32,10 @@ def get_data(location):
 #     break
 
 
-def get_pickle_location():
+def get_pickle_location(train=True):
     save_location = r"D:\Datasets\IsItCorrect"
-    train_location = os.path.join(save_location, "beta_train.pkl")
-    return train_location
+    if train:
+        pickle_location = os.path.join(save_location, 'beta_train.pkl')
+    else:
+        pickle_location = os.path.join(save_location, "beta_validate.pkl")
+    return pickle_location

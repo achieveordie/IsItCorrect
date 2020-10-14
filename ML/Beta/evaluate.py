@@ -6,7 +6,7 @@ import time
 
 cuda0 = torch.device("cuda:0")
 
-save_model_location = r"D:\Datasets\IsItCorrect\model\model_actual.pth"
+save_model_location = r"D:\Datasets\IsItCorrect\model\model0_actual.pth"
 tokenizer_location = r"D:\Datasets\camembert-base\sentencepiece.bpe.model"
 
 
@@ -17,18 +17,19 @@ def load_model(save_model_location):
     return model
 
 
-def load_data(tokenizer_location):
-    pickle_location = get_pickle_location()
-    trainloader = get_data(pickle_location)
-    return trainloader
+def load_data():
+    pickle_location = get_pickle_location(train=False)
+    testloader = get_data(pickle_location)
+    return testloader
 
 
 def evaluate():
     model = load_model(save_model_location)
     tokenizer = CamembertTokenizer.from_pretrained(tokenizer_location)
-    trainloader = load_data(tokenizer_location)
+    testloader = load_data()
     softmax = torch.nn.Softmax(dim=1)
-    iter_loader = iter(trainloader)
+    iter_loader = iter(testloader)
+    correct = 0
     for data in iter_loader:
         # print("Data going in: ")
         # print(data['sentence'])
@@ -44,9 +45,12 @@ def evaluate():
         for i in range(len(data["label"])):
             output = softmax(output)
             pred = torch.argmax(output[i]).item()
-            print("Label : {}, Prediction: {}, with Probability= {}".format(data["label"][i].item(),
-                                                                            pred,
-                                                                            output[i][pred].item()*100.0))
+            # print("Label : {}, Prediction: {}, with Probability= {}".format(data["label"][i].item(),
+            #                                                                 pred,
+            #                                                                 output[i][pred].item()*100.0))
+            if pred == data["label"][i].item():
+                correct += 1
+    print("Percentage of correct predictions: {}".format((correct/len(testloader["label"]) * 100.0)))
 
 
 if __name__ == "__main__":
