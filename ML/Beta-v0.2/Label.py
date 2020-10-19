@@ -1,4 +1,21 @@
 from tabulate import tabulate
+import re
+from construct import min_length_qualify, decide_intensity, Sequence
+
+
+def labelify(correct, changed):
+    """
+    This method is used to make pre-labels (in form of list) and return these (two)
+    list (which are of the same len correspoinding to their strings),
+    one corressponding to `correct` and other for `changed`.
+    :param correct: string which doesn't contain any <START>/<END> tag, denoting correct sentence
+    :param changed: string which doesn't contain any <START>/<END> tag, denoting the sentene has changed
+    :return: `label_correct`, `label_changed`: list which can be passed to `Type1Label` as `label` variable
+    which would be finally converted into label
+
+    `correct` and `changed` might not be of same length (when Grammer absence of words takes place)
+    """
+
 
 
 class Label:
@@ -88,3 +105,19 @@ def make_label(label):
 # print(len(label_wro.label))
 # label_cor.pretty_print()
 # label_wro.pretty_print()
+
+
+testing_file_location = r"D:\Datasets\IsItCorrect\testing-new.txt"
+pattern = re.compile("<START>.*?<END>")
+with open(testing_file_location, 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+    lines = pattern.findall(lines[0])
+    print("Total Number of lines are ", len(lines))
+    sample = lines[5]
+    del lines
+print(sample)
+sample = Sequence(sample)
+if min_length_qualify(sample.correct[7:-5]):
+    decided = decide_intensity()
+    print("Intensity Level is ", decided)
+

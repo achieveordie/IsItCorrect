@@ -5,10 +5,35 @@ import random
 import pickle
 
 
+def min_length_qualify(line):
+    return len(line.split(" ")) > 5
+
+
+def decide_intensity():
+    """
+    Takes nothing as an argument and returns value from 0-4 depending upon weights
+    :return: number b/w 0-4 `int`
+    """
+    choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
+    return choice
+
+
 class Sequence:
-    """ Class for all Sequence-based changes, created a wrapper from labeling.py in Beta-v0.1"""
+    """
+    Class for all Sequence-based changes, created a wrapper from labeling.py in Beta-v0.1
+    where each intensity level changes the sequence of words with.
+    The sentence passed SHOULD be enclosed within <START>...<END> which is removed and
+    stored into `self.correct` which doesn't change with time and the changes made are
+    reflected only in `self.changed` which is by default None.
+
+    for every `intensity` method:
+    Takes `self.correct` and `self.changed` and makes changes to `self.changed` which can be called from
+    outside of the class
+        :return: None
+    """
     def __init__(self, line):
-        self.line = line
+        self.correct = line[7:-5]
+        self.changed = None
 
     def intensity_0(self):
 
@@ -30,28 +55,27 @@ class Sequence:
                     line[i - 1], line[i] = line[i], line[i - 1]
             return " ".join(line)
 
-        self.line = self.line[7:-5].split(" ")
-        len_sen = len(self.line)
+        self.changed = self.correct.split(" ")
+        len_sen = len(self.changed)
         int_range = [i for i in range(1, len_sen - 2)]
         if random.randint(0, 1):  # choose adjacent if 1
             if len_sen > 20:
-                self.line = swap_adjacent(self.line, 5, int_range)
+                self.changed = swap_adjacent(self.changed, 5, int_range)
             elif 20 >= len_sen >= 10:
-                self.line = swap_adjacent(self.line, 3, int_range)
+                self.changed = swap_adjacent(self.changed, 3, int_range)
             elif 10 > len_sen >= 5:
-                self.line = swap_adjacent(self.line, 2, int_range)
+                self.changed = swap_adjacent(self.changed, 2, int_range)
             else:
-                self.line = swap_adjacent(self.line, 1, int_range)
+                self.changed = swap_adjacent(self.changed, 1, int_range)
         else:
             int_range[0] += 1
             int_range[-1] -= 1
             if len_sen > 30:
-                self.line = swap_apart(self.line, 3, int_range)
+                self.changed = swap_apart(self.changed, 3, int_range)
             elif 30 >= len_sen > 15:
-                self.line = swap_apart(self.line, 2, int_range)
+                self.changed = swap_apart(self.changed, 2, int_range)
             else:
-                self.line = swap_apart(self.line, 1, int_range)
-        return self.line
+                self.changed = swap_apart(self.changed, 1, int_range)
 
     def intensity_1(self):
 
@@ -63,63 +87,64 @@ class Sequence:
                     choices[1]]
             return line
 
-        self.line = self.line[7:-5].split(" ")
-        len_sen = len(self.line)
+        self.changed = self.correct.split(" ")
+        len_sen = len(self.changed)
         if len_sen > 40:
-            changed = three_words_swap(self.line[:len_sen // 2], 2)
-            changed.append(three_words_swap(self.line[len_sen // 2:], 2))
+            changed = three_words_swap(self.changed[:len_sen // 2], 2)
+            changed.append(three_words_swap(self.changed[len_sen // 2:], 2))
         elif 40 >= len_sen > 20:
-            changed = three_words_swap(self.line[:len_sen // 3], 1)
-            changed.append(three_words_swap(self.line[len_sen // 3:2 * len_sen // 3], 1))
-            changed.append(three_words_swap(self.line[2 * len_sen // 3:], 1))
+            changed = three_words_swap(self.changed[:len_sen // 3], 1)
+            changed.append(three_words_swap(self.changed[len_sen // 3:2 * len_sen // 3], 1))
+            changed.append(three_words_swap(self.changed[2 * len_sen // 3:], 1))
         elif 20 >= len_sen > 10:
-            changed = three_words_swap(self.line[:len_sen // 2], 1)
-            changed.append(three_words_swap(self.line[len_sen // 2:], 1))
+            changed = three_words_swap(self.changed[:len_sen // 2], 1)
+            changed.append(three_words_swap(self.changed[len_sen // 2:], 1))
         else:
-            changed = three_words_swap(self.line, 1)
+            changed = three_words_swap(self.changed, 1)
         answer = ""
         for value in changed:
             try:
                 answer = answer + " " + value
             except:
                 answer = answer + " " + " ".join(value)
-        return answer
+
+        self.changed = answer
 
     def intensity_2(self):
-        self.line = self.line[7:-5].split(" ")
-        len_sen = len(self.line)
+        self.changed = self.correct.split(" ")
+        len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
         num_words_random = round(len_sen * 0.25)
         choices = random.choices(init_range, k=num_words_random)
         for i in range(len(choices) // 2):
-            self.line[choices[-(i + 1)]], self.line[choices[i]] = self.line[choices[i]], self.line[choices[-(i + 1)]]
+            self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        return " ".join(self.line)
+        self.changed = " ".join(self.changed)
 
     def intensity_3(self):
-        self.line = self.line[7:-5].split(" ")
-        len_sen = len(self.line)
+        self.changed = self.correct.split(" ")
+        len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
         num_words_random = round(len_sen * 0.50)
         choices = random.choices(init_range, k=num_words_random)
         for i in range(len(choices) // 2):
-            self.line[choices[-(i + 1)]], self.line[choices[i]] = self.line[choices[i]], self.line[choices[-(i + 1)]]
+            self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        return " ".join(self.line)
+        self.changed = " ".join(self.changed)
 
     def intensity_4(self):
-        self.line = self.line[7:-5].split(" ")
-        len_sen = len(self.line)
+        self.changed = self.correct.split(" ")
+        len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
         num_words_random = round(len_sen * 0.75)
         choices = random.choices(init_range, k=num_words_random)
         for i in range(len(choices) // 2):
-            self.line[choices[-(i + 1)]], self.line[choices[i]] = self.line[choices[i]], self.line[choices[-(i + 1)]]
+            self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        return " ".join(self.line)
+        self.changed = " ".join(self.changed)
 
 
 class Grammer:
