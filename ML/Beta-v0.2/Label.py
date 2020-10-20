@@ -52,20 +52,22 @@ def labelify(correct, changed):
             if skip_flag:
                 skip_flag = False
                 continue
-            if i <= len_cha:  # i not more than length of `changed`
-                if correct[i] == changed[i + skip_times]:
-                    changed_label[i + skip_times] = 1
-                elif correct[i+1] == changed[i + skip_times]:
-                    changed_label[i + skip_times] = -1
+            if i <= len_cha:  # i not more than length of `changed`, still incomplete, doesn't satisfy current test case
+                if correct[i] == changed[i - skip_times]:
+                    changed_label[i - skip_times] = 1
+                elif correct[i+1] == changed[i - skip_times]:
+                    changed_label[i - skip_times] = -1
                     skip_flag = True
                     skip_times += 1
                 else:
-                    changed_label[i + skip_times] = -1
+                    changed_label[i - skip_times] = -1
             else:
                 pass
     else:
         # Words have been added
         pass
+
+    return correct_label, changed_label
 
 
 class Label:
@@ -157,17 +159,45 @@ def make_label(label):
 # label_wro.pretty_print()
 
 
-testing_file_location = r"D:\Datasets\IsItCorrect\testing-new.txt"
-pattern = re.compile("<START>.*?<END>")
-with open(testing_file_location, 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    lines = pattern.findall(lines[0])
-    print("Total Number of lines are ", len(lines))
-    sample = lines[5]
-    del lines
-print(sample)
-sample = Sequence(sample)
-if min_length_qualify(sample.correct[7:-5]):
-    decided = decide_intensity()
-    print("Intensity Level is ", decided)
+# The following are some try-run cases
+# testing_file_location = r"./sample_text.txt"
+# pattern = re.compile("<START>.*?<END>")
+# with open(testing_file_location, 'r', encoding='utf-8') as file:
+#     lines = file.readlines()
+#     lines = pattern.findall(lines[0])
+#     print("Total Number of lines are ", len(lines))
+#     sample = lines[5]
+#     del lines
+# print(sample)
+# # sample = "We used to play together"
+# sample = Sequence(sample)
+# if min_length_qualify(sample.correct[7:-5]):
+#     decided = decide_intensity()
+#     print("Intensity Level is ", decided)
+#     if decided == 0:
+#         sample.intensity_0()
+#     elif decided == 1:
+#         sample.intesity_1()
+#     elif decided == 2:
+#         sample.intensity_2()
+#     elif decided == 3:
+#         sample.intensity_3()
+#     else:
+#         sample.intensity_4()
+#
+#     correct, changed = sample.correct, sample.changed
+#     correct_label, changed_label = labelify(correct, changed)
+#
+#     a = Type1Label(correct, correct_label)
+#     a.pretty_print()
+#     b = Type1Label(changed, changed_label)
+#     b.pretty_print()
+
+cor = "We used to play together"
+cha = "We to used together"
+cor_label, cha_label = labelify(cor, cha)
+a = Type1Label(cor, cor_label)
+b = Type1Label(cha, cha_label)
+a.pretty_print()
+b.pretty_print()
 
