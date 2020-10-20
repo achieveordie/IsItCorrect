@@ -14,8 +14,58 @@ def labelify(correct, changed):
     which would be finally converted into label
 
     `correct` and `changed` might not be of same length (when Grammer absence of words takes place)
-    """
 
+    Here are some examples that are to be considered for labeling-dilemma:
+
+    `correct` : We used to play together.
+                1   1   1   1   1
+
+    `changed`: We use to together play. (wrong grammer of any type)
+               1   -1  1     -1    -1
+
+    `changed`: We car use to play together. (extra words)
+               1   -1  -1  1  1      1
+
+    `changed`: We used play together. (absent words)
+                1  1    -1   1
+    """
+    correct = correct.split(" ")
+    changed = changed.split(" ")
+    len_cor = len(correct)
+    len_cha = len(changed)
+    correct_label = [1] * len_cor
+    changed_label = [0] * len_cha
+    if len_cor == len_cha:
+        # No words removed or added, trivial case
+        for i in range(len_cor):
+            if changed[i] != correct[i]:
+                changed_label[i] = -1
+            else:
+                changed_label[i] = 1
+
+    elif len_cor > len_cha:
+        # Words have been removed, so at least one less length
+        # The logic here assumes that two words are not skipped in row, need to adapt to overcome this assumption
+        skip_flag = False  # in `i`th iteration, if correct[i+1] == changed[i] don't check for `i+1`th iteration
+        skip_times = 0  # to keep the track of how many times skipped, so correct[i] = changed[i + skip_times]
+        for i in range(len_cor):
+            if skip_flag:
+                skip_flag = False
+                continue
+            if i <= len_cha:  # i not more than length of `changed`
+                if correct[i] == changed[i + skip_times]:
+                    changed_label[i + skip_times] = 1
+                elif correct[i+1] == changed[i + skip_times]:
+                    changed_label[i + skip_times] = -1
+                    skip_flag = True
+                    skip_times += 1
+                else:
+                    changed_label[i + skip_times] = -1
+            else:
+                pass
+    else:
+        # Words have been added
+        pass
 
 
 class Label:
