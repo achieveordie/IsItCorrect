@@ -20,15 +20,44 @@ def labelify(correct, changed):
     `correct` : We used to play together.
                 1   1   1   1   1
 
-    `changed`: We use to together play. (wrong grammer of any type)
+    `changed`: We to used play together (sequence)
+                1  -1  -1  1    1
+
+    `changed`: We use to together play. (wrong grammar of any type)
                1   -1  1     -1    -1
 
-    `changed`: We car use to play together. (extra words)
-               1   -1  -1  1  1      1
+    `changed`: We car used to play together. (extra words)
+               1   -1  1  1  1      1
 
     `changed`: We used play together. (absent words)
                 1  1    -1   1
+
+    Things get difficult when there is a combination of two changes, for example, sequence and absent words:
+    `changed` : We to used together. (sequence + absent)
+                1  -1  -1   -1
+    For now double mistakes are omitted because labeling becomes immensely difficult because the combination of
+    these mistakes can also lead to a correct (albeit different) sentence.
+    Eg: `changed` : We play together. (two consecutive words missing may lead to correct sentences)
+                    1   -1   1
+
+ Here are some examples of what works for self reference in future:
+    `correct`: We used to play together.
+               1  1    1   1     1
+    `changed`: We car used to play so together.
+                1  -1   1    1   1   -1   1
+    `changed`: We to used play together.
+               1  -1  -1    1      1
+    `changed`: We use to together play.
+                1   -1  1   -1      -1
+    `changed`: We used play together.
+                1   1    -1    1
+ Examples of what doesn't work:
+    `changed`: used play together.
+                 -1    -1   0
+    `changed`: We to used together.
+                1  -1  -1   1
     """
+    
     correct = correct.split(" ")
     changed = changed.split(" ")
     len_cor = len(correct)
@@ -55,7 +84,7 @@ def labelify(correct, changed):
             if i <= len_cha:  # i not more than length of `changed`, still incomplete, doesn't satisfy current test case
                 if correct[i] == changed[i - skip_times]:
                     changed_label[i - skip_times] = 1
-                elif correct[i+1] == changed[i - skip_times]:
+                elif correct[i+1] == changed[i - skip_times] or correct[i-1] == changed[i - skip_times]:
                     changed_label[i - skip_times] = -1
                     skip_flag = True
                     skip_times += 1
@@ -65,7 +94,13 @@ def labelify(correct, changed):
                 pass
     else:
         # Words have been added
-        pass
+        skip_times = 0  # So we could avoid IndexError in correct due to it's smaller size
+        for i in range(len_cha):
+            if changed[i] == correct[i - skip_times]:
+                changed_label[i] = 1
+            else:
+                changed_label[i] = -1
+                skip_times += 1
 
     return correct_label, changed_label
 
@@ -193,8 +228,8 @@ def make_label(label):
 #     b = Type1Label(changed, changed_label)
 #     b.pretty_print()
 
-cor = "We used to play together"
-cha = "We to used together"
+cor = "together."
+cha = "We used to play together."
 cor_label, cha_label = labelify(cor, cha)
 a = Type1Label(cor, cor_label)
 b = Type1Label(cha, cha_label)
