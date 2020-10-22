@@ -1,6 +1,8 @@
 from tabulate import tabulate
 import re
 from construct import min_length_qualify, decide_intensity, Sequence
+from pathlib import Path
+import pickle
 
 
 def labelify(correct, changed):
@@ -57,7 +59,7 @@ def labelify(correct, changed):
     `changed`: We to used together.
                 1  -1  -1   1
     """
-    
+
     correct = correct.split(" ")
     changed = changed.split(" ")
     len_cor = len(correct)
@@ -142,7 +144,8 @@ class Type1Label:
         self.lab_len = len(label)
         print("Value of label_length is ", self.lab_len)
 
-        self.label = make_label(label)
+        self.label = label
+        # self.label = make_label(label)
 
     def __str__(self):
         label = [self.label[i] for i in range(self.lab_len)]
@@ -165,19 +168,31 @@ class Type1Label:
         headers = [i for i in self.sentence.split(" ")]
         print(tabulate(label, headers, tablefmt='plain'))
 
+    def store_dict(self):
+        """
+        This method is same as the method from the old labeling class, which is responsible to make a dict which
+        can futher be pickled.
+        :return: a `dict` of the following format:
+        { "label" : List/Tuple of fixed size 512
+          "sentence" : String of variable length
+        }
+        """
+
+        return {"label": self.label, "sentence": self.sentence}
+
 
 def make_label(label):
     """
     Used to make label complete of 512 length.
     :param label: list of any length
-    :return: numpy array of length 512 with 0s appended to `label`
+    :return: list of length 512 with 0s appended to `label`
     """
     for _ in range(512 - len(label)):
         label.append(0)
     return label
 
 
-# examples:
+# examples to use the class `Type1Label`:
 # sen_cor = 'We used to play together.'
 # sen_wro = 'We use to together play.'
 # lab_cor = [1, 1, 1, 1, 1]
@@ -195,44 +210,59 @@ def make_label(label):
 
 
 # The following are some try-run cases
-# testing_file_location = r"./sample_text.txt"
-# pattern = re.compile("<START>.*?<END>")
-# with open(testing_file_location, 'r', encoding='utf-8') as file:
-#     lines = file.readlines()
-#     lines = pattern.findall(lines[0])
-#     print("Total Number of lines are ", len(lines))
-#     sample = lines[5]
-#     del lines
-# print(sample)
-# # sample = "We used to play together"
-# sample = Sequence(sample)
-# if min_length_qualify(sample.correct[7:-5]):
-#     decided = decide_intensity()
-#     print("Intensity Level is ", decided)
-#     if decided == 0:
-#         sample.intensity_0()
-#     elif decided == 1:
-#         sample.intesity_1()
-#     elif decided == 2:
-#         sample.intensity_2()
-#     elif decided == 3:
-#         sample.intensity_3()
-#     else:
-#         sample.intensity_4()
-#
-#     correct, changed = sample.correct, sample.changed
-#     correct_label, changed_label = labelify(correct, changed)
-#
-#     a = Type1Label(correct, correct_label)
-#     a.pretty_print()
-#     b = Type1Label(changed, changed_label)
-#     b.pretty_print()
+testing_file_location = Path("sample_text.txt")
+pattern = re.compile("<START>.*?<END>")
+db_correct = {}
+db_wrong = {}
+with open(str(testing_file_location), 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+    lines = pattern.findall(lines[0])
+    total_lines = len(lines)
+    print("Total Number of lines are ", total_lines)
+    for i, line in enumerate(lines):
+        # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
+        sample = Sequence(line)
+        if min_length_qualify(sample.correct[7:-5]):
+            decided = decide_intensity()
+            print("Intensity Level is ", decided)
+            if decided == 0:
+                sample.intensity_0()
+            elif decided == 1:
+                sample.intensity_1()
+            elif decided == 2:
+                sample.intensity_2()
+            elif decided == 3:
+                sample.intensity_3()
+            else:
+                sample.intensity_4()
 
-cor = "together."
-cha = "We used to play together."
-cor_label, cha_label = labelify(cor, cha)
-a = Type1Label(cor, cor_label)
-b = Type1Label(cha, cha_label)
-a.pretty_print()
-b.pretty_print()
+            correct, changed = sample.correct, sample.changed
+            correct_label, changed_label = labelify(correct, changed)
+
+            a = Type1Label(correct, correct_label)
+            # a.pretty_print()
+            b = Type1Label(changed, changed_label)
+            # b.pretty_print()
+
+            db_correct[i] = a.store_dict()
+            db_wrong[i] = b.store_dict()
+
+    with open('sample_correct_diff.pkl', 'wb') as wfile:
+        pickle.dump(db_correct, wfile)
+    with open('sample_wrong_diff.pkl', 'wb') as wfile:
+        pickle.dump(db_wrong, wfile)
+
+"""
+There is a difference of (47-10)kb = 37 kb to store approx. 30 sentences.
+This difference is due to having redundant 0s in the label. Need to decide this storage vs computation trade-off.
+Adding both type of pickle files, storing the correct and changed sentences into different pickle files.
+"""
+
+# cor = "together."
+# cha = "We used to play together."
+# cor_label, cha_label = labelify(cor, cha)
+# a = Type1Label(cor, cor_label)
+# b = Type1Label(cha, cha_label)
+# a.pretty_print()
+# b.pretty_print()
 
