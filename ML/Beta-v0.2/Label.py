@@ -1,6 +1,6 @@
 from tabulate import tabulate
 import re
-from construct import min_length_qualify, decide_intensity, Sequence
+from construct import min_length_qualify, Sequence
 from pathlib import Path
 import pickle
 
@@ -138,14 +138,17 @@ class Label:
 
 class Type1Label:
     """ New Label which is for Labeling Type1 as well as Type2
-    (Type1 and Type2 can be found in `construct.txt`)"""
-    def __init__(self, sentence, label):
+    (Type1 and Type2 can be found in `construct.txt`), if `convert_to_max` argument is set to true then label
+    will be appended with 0s to make the total length of label 512, only required before feeding in to the model
+    otherwise avoid to save storage space at the cost of computations before training."""
+    def __init__(self, sentence, label, convert_to_max=False):
         self.sentence = sentence
         self.lab_len = len(label)
         print("Value of label_length is ", self.lab_len)
 
         self.label = label
-        # self.label = make_label(label)
+        if convert_to_max:
+            self.label = make_label(label)
 
     def __str__(self):
         label = [self.label[i] for i in range(self.lab_len)]
@@ -192,6 +195,20 @@ def make_label(label):
     return label
 
 
+def make_unlabel(label):
+    """
+    Used to remove the extra 0s at the end of the label, hence avoiding large pickle files of many zeros
+    :param label: list of size 512  containing 1, -1 and zeros
+    :return: list of variable size, containing no zeros
+    """
+    unlabeled = []
+    for _ in range(512):
+        if label[i] != 0:
+            unlabeled.append(label[i])
+        else:
+            break
+    return unlabeled
+
 # examples to use the class `Type1Label`:
 # sen_cor = 'We used to play together.'
 # sen_wro = 'We use to together play.'
@@ -222,19 +239,8 @@ with open(str(testing_file_location), 'r', encoding='utf-8') as file:
     for i, line in enumerate(lines):
         # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
         sample = Sequence(line)
-        if min_length_qualify(sample.correct[7:-5]):
-            decided = decide_intensity()
-            print("Intensity Level is ", decided)
-            if decided == 0:
-                sample.intensity_0()
-            elif decided == 1:
-                sample.intensity_1()
-            elif decided == 2:
-                sample.intensity_2()
-            elif decided == 3:
-                sample.intensity_3()
-            else:
-                sample.intensity_4()
+        if min_length_qualify(sample.correct):
+            sample.make_change()
 
             correct, changed = sample.correct, sample.changed
             correct_label, changed_label = labelify(correct, changed)

@@ -10,15 +10,6 @@ def min_length_qualify(line):
     return len(line.split(" ")) > 5
 
 
-def decide_intensity():
-    """
-    Takes nothing as an argument and returns value from 0-4 depending upon weights
-    :return: number b/w 0-4 `int`
-    """
-    choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
-    return choice
-
-
 class Changes(ABC):
     """
     This is a base class to `Sequence` and `Grammar` which contains two abstract methods:
