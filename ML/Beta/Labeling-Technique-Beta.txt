@@ -8,7 +8,8 @@ For the purpose let's say we have 100 sample sentences in our corpus.
 All 100% samples will undergo randomization and will also store the original sentence making a total of 200 sentences
 
 
--Method to do this changing:
+-Method to do this changing: (The most radical change{intensity 4} will be done least often with the next level change
+being performed 1.125 times as often, this leads to the following percentages)
 a) 8% of selected (round down) with Level 4 Intensity --- 8 sentences
 b) 9% of selected (round up) with level 3 Intensity --- 10 sentences
 c) 18% of selected (round down) with level 2 Intensity --- 18 sentences

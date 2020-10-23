@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import random
 import pickle
+from abc import ABC, abstractmethod
 
 
 def min_length_qualify(line):
@@ -18,7 +19,24 @@ def decide_intensity():
     return choice
 
 
-class Sequence:
+class Changes(ABC):
+    """
+    This is a base class to `Sequence` and `Grammar` which contains two abstract methods:
+    `make_choice` is responsible for making choice as to which changes are to be made in either class.
+    `make_change` is responsible for instantiating the actual implementation, resulting in
+    `self.changed` to contain the changed sentence in their respective classes, so one only needs to call
+    this method after creating the object.
+    """
+    @abstractmethod
+    def make_choice(self):
+        pass
+
+    @abstractmethod
+    def make_change(self):
+        pass
+
+
+class Sequence(Changes):
     """
     Class for all Sequence-based changes, created a wrapper from labeling.py in Beta-v0.1
     where each intensity level changes the sequence of words with.
@@ -28,12 +46,45 @@ class Sequence:
 
     for every `intensity` method:
     Takes `self.correct` and `self.changed` and makes changes to `self.changed` which can be called from
-    outside of the class
+    outside of the class.
+
+    The functionality of each level is documented in `Beta/labeling-Technique-Beta.txt`.
         :return: None
     """
     def __init__(self, line):
         self.correct = line[7:-5]
         self.changed = None
+        self.choice = None
+
+    def make_choice(self):
+        """
+        This method is useful for making choices as to what will be the level of intensity of change,
+        the logic of why these weights are chosen is documented in `Beta/Labeling-Technique-Beta.txt`
+        :return: None
+        """
+        super().make_choice()
+        self.choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
+
+    def make_change(self):
+        """
+        This method uses all other methods to make a Sequence change
+        :return: None
+        """
+        super(Sequence, self).make_change()
+        if self.choice is not None: # need to ensure we don't call this method more than once
+            print("Changes have already been made, call `changed` attribute to get changed sentence")
+        else:
+            self.make_choice()
+            if self.choice == 0:
+                self.intensity_0()
+            elif self.choice == 1:
+                self.intensity_1()
+            elif self.choice == 2:
+                self.intensity_2()
+            elif self.choice == 3:
+                self.intensity_3()
+            else:
+                self.intensity_4()
 
     def intensity_0(self):
 
@@ -147,10 +198,35 @@ class Sequence:
         self.changed = " ".join(self.changed)
 
 
-class Grammer:
-    """Class for all Grammer-based changes to be made for one sentence, added in B-v0.2"""
+class Grammar(Changes):
+    """
+    Class for all Grammar-based changes to be made for one sentence, added in B-v0.2.
+    Just like `Sequence` class, this contains methods to change the grammar of a sentence in order
+    to emulate the mistakes that a learner would make. This is a prototype class which contains
+    only 8 methods (8 different ways) to make a grammatical error, this needs to be further expanded
+    in order to include more complex errors.
+
+    Unlike `Sequence` class, where every sentences are equally valid, here we need to ensure that in
+    order to make a grammatical error, we need to have that grammatical structure in the given sentence
+    and hence the abstractmethod `make_choice()` from base class will be responsible in
+    identifying this structure. This might not the case for every error (like spelling errors, absent words) and
+    hence a probabilistic framework is also required similar to `Sequence`'s `make_choice()` in order
+    to have an equal (or appropiate) amount of mistakes in the data for the model.
+
+    This is a subclass to `Changes` and has all the restrictions that `Sequence` had.
+    """
     def __init__(self, line):
-        self.line = line
+        self.correct = line[7:-5]
+        self.changed = None
+        self.choice = None
+
+    def make_choice(self):
+        super(Grammar, self).make_choice()
+        pass
+
+    def make_change(self):
+        super(Grammar, self).make_change()
+        pass
 
     def tense(self):
         """ Changing tense of some part of text"""

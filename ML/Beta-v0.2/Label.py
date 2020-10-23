@@ -37,8 +37,8 @@ def labelify(correct, changed):
     Things get difficult when there is a combination of two changes, for example, sequence and absent words:
     `changed` : We to used together. (sequence + absent)
                 1  -1  -1   -1
-    For now double mistakes are omitted because labeling becomes immensely difficult because the combination of
-    these mistakes can also lead to a correct (albeit different) sentence.
+    For now double mistakes (absent words/extra words + sequence) are omitted because labeling becomes immensely
+    difficult because the combination of these mistakes can also lead to a correct (albeit different) sentence.
     Eg: `changed` : We play together. (two consecutive words missing may lead to correct sentences)
                     1   -1   1
 
