@@ -30,10 +30,12 @@ class Changes(ABC):
 class Sequence(Changes):
     """
     Class for all Sequence-based changes, created a wrapper from labeling.py in Beta-v0.1
-    where each intensity level changes the sequence of words with.
+    where each intensity level changes the sequence of words.
     The sentence passed SHOULD be enclosed within <START>...<END> which is removed and
     stored into `self.correct` which doesn't change with time and the changes made are
     reflected only in `self.changed` which is by default None.
+
+    The only method that is intended to be called from the outside is `make_change` which handles all other methods.
 
     for every `intensity` method:
     Takes `self.correct` and `self.changed` and makes changes to `self.changed` which can be called from

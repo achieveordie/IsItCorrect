@@ -144,11 +144,9 @@ class Type1Label:
     def __init__(self, sentence, label, convert_to_max=False):
         self.sentence = sentence
         self.lab_len = len(label)
-        print("Value of label_length is ", self.lab_len)
+        # print("Value of label_length is ", self.lab_len)
 
-        self.label = label
-        if convert_to_max:
-            self.label = make_label(label)
+        self.label = label if not convert_to_max else make_label(label)  # read class docs.
 
     def __str__(self):
         label = [self.label[i] for i in range(self.lab_len)]
@@ -227,36 +225,37 @@ def make_unlabel(label):
 
 
 # The following are some try-run cases
-testing_file_location = Path("sample_text.txt")
-pattern = re.compile("<START>.*?<END>")
-db_correct = {}
-db_wrong = {}
-with open(str(testing_file_location), 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    lines = pattern.findall(lines[0])
-    total_lines = len(lines)
-    print("Total Number of lines are ", total_lines)
-    for i, line in enumerate(lines):
-        # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
-        sample = Sequence(line)
-        if min_length_qualify(sample.correct):
-            sample.make_change()
+if __name__ == "__main__":
+    testing_file_location = Path("sample_text.txt")
+    pattern = re.compile("<START>.*?<END>")
+    db_correct = {}
+    db_wrong = {}
+    with open(str(testing_file_location), 'r', encoding='utf-8') as file:
+        lines = file.readlines()
+        lines = pattern.findall(lines[0])
+        total_lines = len(lines)
+        print("Total Number of lines are ", total_lines)
+        for i, line in enumerate(lines):
+            # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
+            sample = Sequence(line)
+            if min_length_qualify(sample.correct):
+                sample.make_change()
 
-            correct, changed = sample.correct, sample.changed
-            correct_label, changed_label = labelify(correct, changed)
+                correct, changed = sample.correct, sample.changed
+                correct_label, changed_label = labelify(correct, changed)
 
-            a = Type1Label(correct, correct_label)
-            # a.pretty_print()
-            b = Type1Label(changed, changed_label)
-            # b.pretty_print()
+                a = Type1Label(correct, correct_label)
+                # a.pretty_print()
+                b = Type1Label(changed, changed_label)
+                # b.pretty_print()
 
-            db_correct[i] = a.store_dict()
-            db_wrong[i] = b.store_dict()
+                db_correct[i] = a.store_dict()
+                db_wrong[i] = b.store_dict()
 
-    with open('sample_correct_diff.pkl', 'wb') as wfile:
-        pickle.dump(db_correct, wfile)
-    with open('sample_wrong_diff.pkl', 'wb') as wfile:
-        pickle.dump(db_wrong, wfile)
+        with open('sample_correct.pkl', 'wb') as wfile:
+            pickle.dump(db_correct, wfile)
+        with open('sample_wrong.pkl', 'wb') as wfile:
+            pickle.dump(db_wrong, wfile)
 
 """
 There is a difference of (47-10)kb = 37 kb to store approx. 30 sentences.
