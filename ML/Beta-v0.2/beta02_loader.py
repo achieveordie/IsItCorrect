@@ -1,5 +1,8 @@
 import pickle
 from torch.utils.data import Dataset, DataLoader
+from beta02_hyperparameters import get_hps
+
+hparams = get_hps()
 
 
 def get_data(location):
@@ -10,7 +13,7 @@ def get_data(location):
     """
     data = load_pickle(location)
     data = CustomLoaderBeta02(data)
-    return DataLoader(data, batch_size=16, shuffle=False)
+    return DataLoader(data, batch_size=hparams["batch_size"], shuffle=False)
 
 
 def load_pickle(location):

@@ -4,7 +4,7 @@ The exact same code as Beta-v0.1(without download), rewritten to avoid version d
 from transformers import CamembertConfig, CamembertModel
 
 
-def getConfiguration():
+def get_configuration():
     configuration = {
         "vocab_size": 32005,
         "hidden_size": 768,
@@ -20,8 +20,8 @@ def getConfiguration():
     return configuration
 
 
-def loadInitialModel():
-    configuration = getConfiguration()
+def load_initial_model():
+    configuration = get_configuration()
     config = CamembertConfig(vocab_size=configuration["vocab_size"],
                              hidden_size=configuration["hidden_size"],
                              num_hidden_layers=configuration["num_hidden_layers"],

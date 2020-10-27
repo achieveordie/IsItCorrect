@@ -1,5 +1,8 @@
-from beta02_utils import LoadInitialModel
+from beta02_utils import load_initial_model
 import torch
+from beta02_hyperparameters import get_hps
+
+hparams = get_hps()
 
 
 def get_custom_model():
@@ -7,7 +10,7 @@ def get_custom_model():
     The method which is to be called from other files, handles the rest.
     :return: returns the instance of custom model.
     """
-    cam_model = LoadInitialModel()
+    cam_model = load_initial_model()
     return Camembert(cam_model)
 
 
@@ -21,11 +24,11 @@ class Camembert(torch.nn.Module):
         self.l1 = cam_model
         total_layers = 199
         for i, param in enumerate(cam_model.parameters()):
-            if total_layers - i > 15:
+            if total_layers - i > hparams["retrain_layers"]:
                 param.requires_grad = False
             else:
                 pass
-        self.l2 = torch.nn.Dropout(0.1)
+        self.l2 = torch.nn.Dropout(hparams["dropout_rate"])
         self.l3 = torch.nn.Linear(768, 512)
 
     def forward(self, ids, mask):
