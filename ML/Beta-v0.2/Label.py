@@ -228,14 +228,17 @@ def make_unlabel(label):
 if __name__ == "__main__":
     testing_file_location = Path("sample_text.txt")
     pattern = re.compile("<START>.*?<END>")
-    db_correct = {}
-    db_wrong = {}
+    db_train = {}
+    db_test = {}
     with open(str(testing_file_location), 'r', encoding='utf-8') as file:
         lines = file.readlines()
         lines = pattern.findall(lines[0])
         total_lines = len(lines)
         print("Total Number of lines are ", total_lines)
-        for i, line in enumerate(lines):
+
+        index = 0               # cheap tricks to store correct and changed sentence one after the other
+        start_from_pos = 0      # while ensuring there is a 80-20 train-test split.
+        for line in lines:
             # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
             sample = Sequence(line)
             if min_length_qualify(sample.correct):
@@ -248,14 +251,20 @@ if __name__ == "__main__":
                 # a.pretty_print()
                 b = Type1Label(changed, changed_label)
                 # b.pretty_print()
+                if index < int(0.4 * total_lines):
+                    db_test[index] = a.store_dict()
+                    db_test[index+1] = b.store_dict()
+                    index += 2
+                    start_from_pos = index
+                else:
+                    db_train[index - start_from_pos] = a.store_dict()
+                    db_train[index + 1 - start_from_pos] = b.store_dict()
+                    index += 2
 
-                db_correct[i] = a.store_dict()
-                db_wrong[i] = b.store_dict()
-
-        with open('sample_correct.pkl', 'wb') as wfile:
-            pickle.dump(db_correct, wfile)
-        with open('sample_wrong.pkl', 'wb') as wfile:
-            pickle.dump(db_wrong, wfile)
+        with open('sample_train.pkl', 'wb') as wfile:
+            pickle.dump(db_train, wfile)
+        with open('sample_test.pkl', 'wb') as wfile:
+            pickle.dump(db_test, wfile)
 
 """
 There is a difference of (47-10)kb = 37 kb to store approx. 30 sentences.
