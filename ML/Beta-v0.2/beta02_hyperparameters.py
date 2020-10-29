@@ -12,9 +12,9 @@ def get_hps():
     """
     hyperparameters = {
         "learning_rate": 1e-05,
-        "batch_size": 16,
+        "batch_size": 2,
         "retrain_layers": 15,
         "dropout_rate": 0.1,
-        "epochs":10
+        "epochs": 10
     }
     return hyperparameters
