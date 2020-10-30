@@ -45,8 +45,8 @@ class Sequence(Changes):
         :return: None
     """
     def __init__(self, line):
-        self.correct = line[7:-5]
-        self.changed = None
+        self.correct = line[7:-5].strip()
+        self.changed = line[7:-5].strip()
         self.choice = None
 
     def make_choice(self):
@@ -88,7 +88,7 @@ class Sequence(Changes):
                     line[i + 2], line[i] = line[i], line[i + 2]
                 else:
                     line[i - 2], line[i] = line[i], line[i - 2]
-            return " ".join(line)
+            return " ".join(line).lstrip()
 
         def swap_adjacent(line, k, int_range):
             choices = random.choices(int_range, k=k)
@@ -97,9 +97,10 @@ class Sequence(Changes):
                     line[i + 1], line[i] = line[i], line[i + 1]
                 else:
                     line[i - 1], line[i] = line[i], line[i - 1]
-            return " ".join(line)
+            return " ".join(line).lstrip()
 
-        self.changed = self.correct.split(" ")
+        # self.changed = self.correct.split(" ")
+        self.changed = self.changed.split(" ")
         len_sen = len(self.changed)
         int_range = [i for i in range(1, len_sen - 2)]
         if random.randint(0, 1):  # choose adjacent if 1
@@ -131,7 +132,8 @@ class Sequence(Changes):
                     choices[1]]
             return line
 
-        self.changed = self.correct.split(" ")
+        # self.changed = self.correct.split(" ")
+        self.changed = self.changed.split(" ")
         len_sen = len(self.changed)
         if len_sen > 40:
             changed = three_words_swap(self.changed[:len_sen // 2], 2)
@@ -152,10 +154,11 @@ class Sequence(Changes):
             except:
                 answer = answer + " " + " ".join(value)
 
-        self.changed = answer
+        self.changed = answer.lstrip()
 
     def intensity_2(self):
-        self.changed = self.correct.split(" ")
+        # self.changed = self.correct.split(" ")
+        self.changed = self.changed.split(" ")
         len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
@@ -164,10 +167,11 @@ class Sequence(Changes):
         for i in range(len(choices) // 2):
             self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        self.changed = " ".join(self.changed)
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_3(self):
-        self.changed = self.correct.split(" ")
+        # self.changed = self.correct.split(" ")
+        self.changed = self.changed.split(" ")
         len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
@@ -176,10 +180,11 @@ class Sequence(Changes):
         for i in range(len(choices) // 2):
             self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        self.changed = " ".join(self.changed)
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_4(self):
-        self.changed = self.correct.split(" ")
+        # self.changed = self.correct.split(" ")
+        self.changed = self.changed.split(" ")
         len_sen = len(self.changed)
         init_range = [i for i in range(len_sen)]
 
@@ -188,7 +193,7 @@ class Sequence(Changes):
         for i in range(len(choices) // 2):
             self.changed[choices[-(i + 1)]], self.changed[choices[i]] = self.changed[choices[i]], self.changed[choices[-(i + 1)]]
 
-        self.changed = " ".join(self.changed)
+        self.changed = " ".join(self.changed).lstrip()
 
 
 class Grammar(Changes):

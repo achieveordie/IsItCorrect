@@ -1,8 +1,11 @@
 import pickle
 from torch.utils.data import Dataset, DataLoader
 from beta02_hyperparameters import get_hps
+from Label import make_label
+import torch
 
 hparams = get_hps()
+device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
 
 
 def get_data(location):
@@ -34,8 +37,12 @@ class CustomLoaderBeta02(Dataset):
     """
     def __init__(self, data):
         self.data = data
+        # map(lambda x: make_label(x["label"]), self.data)
+        # for i in range(len(self.data)):
+        #     self.data[i]["label"] = make_label(self.data[i]["label"])
 
     def __getitem__(self, item):
+        self.data[item]["label"] = torch.tensor(self.data[item]["label"], device=device)
         return self.data[item]
 
     def __len__(self):

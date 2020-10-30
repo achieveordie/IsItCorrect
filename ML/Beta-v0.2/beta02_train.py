@@ -22,7 +22,7 @@ model.train()
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(params=model.parameters(), lr=hparams["learning_rate"])
 save_model_location = Path(r"D:\Datasets\IsItCorrect\model\beta_02")
-data_location = Path(r"sample_train.pkl")
+data_location = Path(r"sample_train_1.pkl")
 
 
 def epochs(num_epochs, trainloader):
@@ -30,19 +30,16 @@ def epochs(num_epochs, trainloader):
         trainloder = iter(trainloader)
         time_start_epoch = time.time()
         for counter, data in enumerate(trainloader):
-            data["label"] = [torch.cat([i, i.new_zeros(512 - i.size(0))], 0) for i in data["label"]]
-            # data["label"] = torch.tensor(data["label"])
-            [print("label\t", index, i.size()) for index, i in enumerate(data["label"])]
             data["sentence"] = tokenizer(data["sentence"], padding=True, max_length=512)
-            data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
-                                                         dtype=torch.long, device=device)
-            [print("sentence\t", index, i.size()) for index, i in enumerate(data["sentence"]["input_ids"])]
 
             data["sentence"]["input_ids"] = list(map(lambda x: x[:512], data["sentence"]["input_ids"]))
             data["sentence"]["attention_mask"] = list(map(lambda x: x[:512], data["sentence"]["attention_mask"]))
 
+            data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
+                                                         dtype=torch.long, device=device)
             data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                               device=device)
+            data["Label"] = data["label"].to(device=device)
             # print("sentence is ", data["sentence"])
             # print("Label is", data["label"])
             # data["label"] = torch.tensor(data["label"], device=device)
@@ -56,6 +53,10 @@ def train(x, actual):
 
     outputs = model(x["input_ids"], x["attention_mask"])
     optimizer.zero_grad()
+    print(outputs.size())
+    print(actual.size())
+    print("Outputs ", outputs)
+    print("Actual ", actual)
     loss = criterion(outputs, actual)
     #print(loss)
     optimizer.zero_grad()
