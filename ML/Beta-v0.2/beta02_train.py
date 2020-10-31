@@ -19,7 +19,8 @@ print("Training will take place on", device)
 
 model = get_custom_model().to(device)
 model.train()
-criterion = torch.nn.CrossEntropyLoss()
+# criterion = torch.nn.CrossEntropyLoss()
+criterion = torch.nn.BCELoss()
 optimizer = torch.optim.Adam(params=model.parameters(), lr=hparams["learning_rate"])
 save_model_location = Path(r"D:\Datasets\IsItCorrect\model\beta_02")
 data_location = Path(r"sample_train_1.pkl")
@@ -27,8 +28,9 @@ data_location = Path(r"sample_train_1.pkl")
 
 def epochs(num_epochs, trainloader):
     for epoch in tqdm(range(num_epochs)):
-        trainloder = iter(trainloader)
+        # trainloader = iter(trainloader)
         time_start_epoch = time.time()
+        print("Total length in trainloader, ", len(trainloader))
         for counter, data in enumerate(trainloader):
             data["sentence"] = tokenizer(data["sentence"], padding=True, max_length=512)
 
@@ -39,7 +41,7 @@ def epochs(num_epochs, trainloader):
                                                          dtype=torch.long, device=device)
             data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                               device=device)
-            data["Label"] = data["label"].to(device=device)
+            data["Label"] = torch.tensor(data["label"], device=device).float()
             # print("sentence is ", data["sentence"])
             # print("Label is", data["label"])
             # data["label"] = torch.tensor(data["label"], device=device)
@@ -53,10 +55,6 @@ def train(x, actual):
 
     outputs = model(x["input_ids"], x["attention_mask"])
     optimizer.zero_grad()
-    print(outputs.size())
-    print(actual.size())
-    print("Outputs ", outputs)
-    print("Actual ", actual)
     loss = criterion(outputs, actual)
     #print(loss)
     optimizer.zero_grad()

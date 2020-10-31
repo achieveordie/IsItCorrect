@@ -30,9 +30,10 @@ class Camembert(torch.nn.Module):
                 pass
         self.l2 = torch.nn.Dropout(hparams["dropout_rate"])
         self.l3 = torch.nn.Linear(768, 512)
+        self.activation = torch.nn.Sigmoid()
 
     def forward(self, ids, mask):
         _, output = self.l1(ids, attention_mask=mask)
         output = self.l2(output)
         output = self.l3(output)
-        return output
+        return self.activation(output)

@@ -42,7 +42,7 @@ class CustomLoaderBeta02(Dataset):
         #     self.data[i]["label"] = make_label(self.data[i]["label"])
 
     def __getitem__(self, item):
-        self.data[item]["label"] = torch.tensor(self.data[item]["label"], device=device)
+        self.data[item]["label"] = torch.tensor(self.data[item]["label"], device=device).float()
         return self.data[item]
 
     def __len__(self):
