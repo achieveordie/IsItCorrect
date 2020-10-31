@@ -7,9 +7,13 @@ import pickle
 
 def labelify(correct, changed):
     """
+    Update 31/10/2020 -> The Labeling has been changed for incorrect -> 1 and correct -> 0 and the padded values
+    will also be padded with 0s. Not changing the original docs for future references. The sample pickle files also
+    stores the labels after padding.
+
     This method is used to make pre-labels (in form of list) and return these (two)
-    list (which are of the same len correspoinding to their strings),
-    one corressponding to `correct` and other for `changed`.
+    list (which are of the same len corresponding to their strings),
+    one corresponding to `correct` and other for `changed`.
     :param correct: string which doesn't contain any <START>/<END> tag, denoting correct sentence
     :param changed: string which doesn't contain any <START>/<END> tag, denoting the sentene has changed
     :return: `label_correct`, `label_changed`: list which can be passed to `Type1Label` as `label` variable
@@ -64,13 +68,15 @@ def labelify(correct, changed):
     changed = changed.split(" ")
     len_cor = len(correct)
     len_cha = len(changed)
-    correct_label = [1] * len_cor
+    correct_label = [0] * len_cor
     changed_label = [0] * len_cha
+    incorrect_label = 1
     if len_cor == len_cha:
         # No words removed or added, trivial case
         for i in range(len_cor):
             if changed[i] != correct[i]:
-                changed_label[i] = -1
+                # changed_label[i] = -1
+                changed_label[i] = incorrect_label
             else:
                 changed_label[i] = 1
 
@@ -87,11 +93,13 @@ def labelify(correct, changed):
                 if correct[i] == changed[i - skip_times]:
                     changed_label[i - skip_times] = 1
                 elif correct[i+1] == changed[i - skip_times] or correct[i-1] == changed[i - skip_times]:
-                    changed_label[i - skip_times] = -1
+                    # changed_label[i - skip_times] = -1
+                    changed_label[i - skip_times] = incorrect_label
                     skip_flag = True
                     skip_times += 1
                 else:
-                    changed_label[i - skip_times] = -1
+                    # changed_label[i - skip_times] = -1
+                    changed_label[i - skip_times] = incorrect_label
             else:
                 pass
     else:
@@ -101,7 +109,8 @@ def labelify(correct, changed):
             if changed[i] == correct[i - skip_times]:
                 changed_label[i] = 1
             else:
-                changed_label[i] = -1
+                # changed_label[i] = -1
+                changed_label[i] = incorrect_label
                 skip_times += 1
 
     return correct_label, changed_label
@@ -166,7 +175,7 @@ class Type1Label:
         :return: None
         """
         label = [[self.label[i] for i in range(self.lab_len)]]
-        headers = [i for i in self.sentence.split(" ")]
+        headers = [i for i in self.sentence.split(" ") if i != "  "]
         print(tabulate(label, headers, tablefmt='plain'))
 
     def store_dict(self):
@@ -174,7 +183,7 @@ class Type1Label:
         This method is same as the method from the old labeling class, which is responsible to make a dict which
         can futher be pickled.
         :return: a `dict` of the following format:
-        { "label" : List/Tuple of fixed size 512
+        { "label" : List/Tuple of variable length/fixed length
           "sentence" : String of variable length
         }
         """
@@ -201,8 +210,8 @@ def make_unlabel(label):
     """
     unlabeled = []
     for _ in range(512):
-        if label[i] != 0:
-            unlabeled.append(label[i])
+        if label[_] != 0:
+            unlabeled.append(label[_])
         else:
             break
     return unlabeled
@@ -247,9 +256,9 @@ if __name__ == "__main__":
                 correct, changed = sample.correct, sample.changed
                 correct_label, changed_label = labelify(correct, changed)
 
-                a = Type1Label(correct, correct_label)
+                a = Type1Label(correct, correct_label, convert_to_max=True)
                 # a.pretty_print()
-                b = Type1Label(changed, changed_label)
+                b = Type1Label(changed, changed_label, convert_to_max=True)
                 # b.pretty_print()
                 if index < int(0.4 * total_lines):
                     db_test[index] = a.store_dict()
@@ -267,6 +276,10 @@ if __name__ == "__main__":
             pickle.dump(db_test, wfile)
 
 """
+New(31/10/2020):
+Storing the labels after padding, hence increasing the size of pickle files three-fold.
+
+Old:
 There is a difference of (47-10)kb = 37 kb to store approx. 30 sentences.
 This difference is due to having redundant 0s in the label. Need to decide this storage vs computation trade-off.
 Adding both type of pickle files, storing the correct and changed sentences into different pickle files.
