@@ -46,12 +46,39 @@ def get_hps():
         "dropout_rate": 0.1,
         "epochs": 40
     }
+    (loss:0.0485, time: 92.29) -> hyperparameters = {
+        "learning_rate": 5e-05,
+        "batch_size": 2,
+        "retrain_layers": 40,
+        "dropout_rate": 0.1,
+        "epochs": 10
+    }
+    (loss: 0.049, time: 80.18) -> hyperparameters = {
+        "learning_rate": 5e-05,
+        "batch_size": 2,
+        "retrain_layers": 20,
+        "dropout_rate": 0.1,
+        "epochs": 10
+    }
+
+    Now using lr_scheduling
+    (loss: 0.7056, time: 83.30) -> hyperparameters = {
+        "learning_rate": 5e-05,
+        "batch_size": 2,
+        "retrain_layers": 40,
+        "dropout_rate": 0.1,
+        "epochs": 10,
+        "step_size": 10,  # Number of epochs to step down lr
+        "gamma": 0.1  # The multiplicative factor by which lr steps down after every `step_size`
+    }
     """
     hyperparameters = {
-        "learning_rate": 1e-05,
+        "learning_rate": 5e-05,
         "batch_size": 2,
-        "retrain_layers": 15,
+        "retrain_layers": 40,
         "dropout_rate": 0.1,
-        "epochs": 40
+        "epochs": 10,
+        "step_size": 10,  # Number of epochs to step down lr
+        "gamma": 0.1  # The multiplicative factor by which lr steps down after every `step_size`
     }
     return hyperparameters
