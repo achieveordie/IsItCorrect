@@ -72,13 +72,11 @@ def get_hps():
         "gamma": 0.1  # The multiplicative factor by which lr steps down after every `step_size`
     }
     """
-    hyperparameters = {
+    final_hyperparameters = {
         "learning_rate": 5e-05,
         "batch_size": 2,
-        "retrain_layers": 40,
+        "retrain_layers": 20,
         "dropout_rate": 0.1,
-        "epochs": 10,
-        "step_size": 10,  # Number of epochs to step down lr
-        "gamma": 0.1  # The multiplicative factor by which lr steps down after every `step_size`
+        "epochs": 10
     }
-    return hyperparameters
+    return final_hyperparameters

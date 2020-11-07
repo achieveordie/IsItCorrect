@@ -1,6 +1,3 @@
-""" note to self: that I am not loading the label with size 512, variable size now"""
-""" Source of error- Labels not of same size and incorrect batch loading of labels"""
-
 import torch
 import time
 from beta02_loader import get_data
@@ -8,7 +5,6 @@ from beta02_custom_model import get_custom_model
 from beta02_hyperparameters import get_hps
 from transformers import CamembertTokenizer
 from tqdm import tqdm
-from pprint import pformat
 import gc
 from pathlib import Path
 
@@ -19,11 +15,17 @@ print("Training will take place on", device)
 
 model = get_custom_model().to(device)
 model.train()
-# criterion = torch.nn.CrossEntropyLoss()
 criterion = torch.nn.BCELoss()
 optimizer = torch.optim.Adam(params=model.parameters(), lr=hparams["learning_rate"])
+# ------- LR_SCHEDULER -------- #
+"""
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optimizer,
+                                            step_size=hparams["step_size"],
+                                            gamma=hparams["gamma"])
+"""
 save_model_location = Path(r"D:\Datasets\IsItCorrect\model\beta_02")
-data_location = Path(r"sample_train_1.pkl")
+model_name = "model_test.pt"
+data_location = Path(r"sample_train.pkl")
 
 
 def epochs(num_epochs, trainloader):
@@ -42,24 +44,27 @@ def epochs(num_epochs, trainloader):
             data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                               device=device)
             data["Label"] = torch.tensor(data["label"], device=device).float()
-            # print("sentence is ", data["sentence"])
-            # print("Label is", data["label"])
-            # data["label"] = torch.tensor(data["label"], device=device)
-            # data["label"] = torch.stack(data["label"])
-            loss = train(data["sentence"], data["label"])
+
+            loss = train(data["sentence"], data["label"], epoch)
             print("For epoch number->{}, data number->{}, loss is->{}"
                   .format(epoch, counter, loss))
+        time_end_epoch = time.time()
+        print("Time for Epoch number {} with time {}".format(epoch+1 , time_end_epoch-time_start_epoch))
+
+    print("Saving model now ")
+    save_name = save_model_location / model_name
+    torch.save(model.state_dict(), str(save_name))
 
 
-def train(x, actual):
+def train(x, actual, epoch):
 
     outputs = model(x["input_ids"], x["attention_mask"])
     optimizer.zero_grad()
     loss = criterion(outputs, actual)
-    #print(loss)
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+    # scheduler.step(epoch=epoch)
     del outputs, x
     torch.cuda.empty_cache()
     gc.collect()
