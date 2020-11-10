@@ -398,3 +398,10 @@ tensor(0.0187, grad_fn=<NllLossBackward>)
 Done for Epoch number 198
 tensor(0.0190, grad_fn=<NllLossBackward>)
 Done for Epoch number 199
+
+
+Results on Test Data (evaluate.py):
+`Number of batches`: 17301
+`Total Time of evaluation`: 5637 seconds
+`Percentage of correct predictions`: 91.03%
+`F-0.5 score`: 0.8810
