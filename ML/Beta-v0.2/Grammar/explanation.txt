@@ -9,3 +9,7 @@ existing code. The flow of which will be as follows:
 Since TreeTagger is available for free use under non-commercial purpose, I have modified it
 to suit for our needs which will not be available here. To use original version, visit
 https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+
+-> There is no limit to the number of lines that can be tagged in a single file,
+the current version of `sample_output.txt` contains 1127 lines, out of which 6 are
+newlines and hence the number of lines in `sample_tagged.txt` is 1121.
