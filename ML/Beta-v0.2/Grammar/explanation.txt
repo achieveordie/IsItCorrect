@@ -4,6 +4,8 @@ existing code. The flow of which will be as follows:
 1) Use `prepare_text.py` to convert `sample_text.txt` into convenient TreeTagger format (sample_prepared.txt).
 2) Call TreeTagger with a python wrapper onto sample_prepared.txt to get sample_pos.txt
 3) Use that output file to create a json for each type of POS.
+*edit 3.5) make another json where each word will have a corresponding tag from tag-list.
+This makes it easier to check which key to look at during the conversion.
 4) Use that json file to replace a particular POS with another(incorrect) word.
 
 Since TreeTagger is available for free use under non-commercial purpose, I have modified it
