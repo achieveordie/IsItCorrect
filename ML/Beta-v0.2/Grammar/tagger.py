@@ -10,12 +10,13 @@ def convert(input_file, output_file=Path("sample_tagged.txt")):
     :return: None
     """
     tagger_location = Path(r"D:/TreeTagger")
-    param_file = tagger_location / 'lib' / 'french.par'
-    process = subprocess.Popen([str(tagger_location / 'bin' / 'tree-tagger.exe'),
-                                str(param_file),
-                                str(input_file),
-                                str(output_file)])
-    stdout, stderror = process.communicate()
+
+    process_batch = subprocess.Popen([
+        str(tagger_location / 'bin' / 'tag-french.bat'),
+        str(input_file),
+        str(output_file)
+    ])
+    stdout, stderror = process_batch.communicate()
     print("Stdout is -> ", stdout)
     print("StdError is -> ", stderror)
     print("Done and saved to ", output_file)

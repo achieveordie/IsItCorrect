@@ -21,10 +21,18 @@ def convert(input_file, output_file=Path('sample_output.txt')):
             for word in line.split(" "):
                 if len(word) > 0:
                     if word[-1] in ('.', ','):
-                        file.write(word[0:len(word)-2]+'\n')
+                        broken = word[0:-2].split("'")
+                        if len(broken) > 1:
+                            broken[0] += "'"
+                        [file.write(broke + '\n') for broke in broken]
+                        # file.write(word[0:len(word)-2]+'\n')
                         file.write(word[-1]+'\n')
                     else:
-                        file.write(word+'\n')
+                        broken = word.split("'")
+                        if len(broken) > 1:
+                            broken[0] += "'"
+                        [file.write(broke + '\n') for broke in broken]
+                        # file.write(word+'\n')
     print("Converted to {}".format(str(output_file)))
 
 

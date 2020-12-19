@@ -12,3 +12,7 @@ https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
 -> There is no limit to the number of lines that can be tagged in a single file,
 the current version of `sample_output.txt` contains 1127 lines, out of which 6 are
 newlines and hence the number of lines in `sample_tagged.txt` is 1121.
+
+-> Synchronous version for sample files takes 1.28 seconds in total.
+
+
