@@ -1,18 +1,18 @@
+Edit(19/12/2020):
+->Code to group words with same lemma will be added. This would give more leverage by simply changing
+tenses of words by mapping them together via their common lemma.
+-> tagged text (`tagged.txt`) contains both tokens and POS, fix bugs.
+
 To facilitate addition of Grammar-based errors into a sentence, I will be using TreeTagger in conjunction with my
 existing code. The flow of which will be as follows:
 
 1) Sample_text.txt -> prepare_text.py -> sample_output.txt
 2) sample_output.txt -> tagger.py -> sample_tagged.txt
-3) sample_tagged.txt, sample_output.txt -> create_json.py -> sample.json, word.json
+3) sample_tagged.txt -> create_json.py -> sample.json, word.json
 
 Since TreeTagger is available for free use under non-commercial purpose, I have modified it
 to suit for our needs which will not be available here. To use original version, visit
 https://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
 
--> There is no limit to the number of lines that can be tagged in a single file,
-the current version of `sample_output.txt` contains 1127 lines, out of which 6 are
-newlines and hence the number of lines in `sample_tagged.txt` is 1121.
-
--> Synchronous version for sample files takes 1.28 seconds in total.
 
 
