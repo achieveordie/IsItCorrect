@@ -2,9 +2,11 @@ from pathlib import Path
 import subprocess
 
 
-def convert(input_file, output_file=Path("data/sample_tagged.txt")):
+def convert(input_file, output_file=Path("data/sample_tagged.txt"),
+            delete_residue=True):
     """
     Uses `subprocess` module to execute shell commands for TreeTagger to tag.
+    :param delete_residue: <bool> Should the single-word-per-line be deleted after operation?
     :param input_file:  <Path-Location> (complete) location of file saved from `prepare_text.py`
     :param output_file: <Path-Location> location of file to be saved
     :return: None
@@ -20,6 +22,12 @@ def convert(input_file, output_file=Path("data/sample_tagged.txt")):
     print("Stdout is -> ", stdout)
     print("StdError is -> ", stderror)
     print("Done and saved to ", output_file)
+
+    print("Deleting single word/line file..")
+    try:
+        input_file.unlink()
+    except OSError:
+        print("Shouldn't reach here but anyways.. {} not deleted".format(input_file))
 
 
 # if __name__ == '__main__':
