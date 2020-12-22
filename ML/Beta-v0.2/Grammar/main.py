@@ -3,18 +3,18 @@ The main file to control the complete flow of the `Grammar` module as mentioned 
 No other code needs to be called if using this file.
 """
 
-import create_json, prepare_text, tagger
+import create_json, prepare_text, tagger, lemma
 from pathlib import Path
 import time
 
 
 start_time = time.time()
 # dir_location = Path(__file__).resolve().parent
-# base_save_location = Path.cwd()  # saving the sample files in the folder itself
-base_save_location = Path("D:/Datasets/IsItCorrect/temp")
+base_save_location = Path.cwd() / 'data'  # saving the sample files in the folder itself
+# base_save_location = Path("D:/Datasets/IsItCorrect/temp")
 
-# original_file_location = Path('..') / 'sample_text.txt'
-original_file_location = Path('D:/Datasets/IsItCorrect') / "parsed_text.txt"
+original_file_location = Path('..') / 'sample_text.txt'
+# original_file_location = Path('D:/Datasets/IsItCorrect') / "parsed_text.txt"
 converted_file_location = base_save_location / 'sample_output.txt'
 tagged_file_location = base_save_location / 'sample_tagged.txt'
 pos_json = base_save_location / 'pos.json'

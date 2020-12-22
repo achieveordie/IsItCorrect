@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 
-def convert(input_file, output_file=Path('sample_output.txt')):
+def convert(input_file, output_file=Path('data/sample_output.txt')):
     """
     To convert a given input text into apt. text file for POS-tagging.
     :param output_file: <Path-Location> location to save the file

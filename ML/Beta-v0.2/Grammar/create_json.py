@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 
 
-def convert(tag_loc=Path('sample_tagged.txt'),
-            tag_json_loc=Path('sample.json'), word_json_loc=Path('word.json')):
+def convert(tag_loc=Path('data/sample_tagged.txt'),
+            tag_json_loc=Path('data/sample.json'), word_json_loc=Path('data/word.json')):
     # the dict will contain keys as per tag-list html and list of words as the corresponding values:
     tag_dict = {}
     word_dict = {}

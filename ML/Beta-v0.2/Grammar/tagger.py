@@ -2,7 +2,7 @@ from pathlib import Path
 import subprocess
 
 
-def convert(input_file, output_file=Path("sample_tagged.txt")):
+def convert(input_file, output_file=Path("data/sample_tagged.txt")):
     """
     Uses `subprocess` module to execute shell commands for TreeTagger to tag.
     :param input_file:  <Path-Location> (complete) location of file saved from `prepare_text.py`
