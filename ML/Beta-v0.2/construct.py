@@ -1,9 +1,31 @@
-from contextlib import closing
+import json
 from pathlib import Path
 import re
 import random
 import pickle
 from abc import ABC, abstractmethod
+
+
+# Opening some files for Grammar:
+base_save_location = Path.cwd() / 'data'
+# base_save_location = Path("D:/Datasets/IsItCorrect/temp")
+
+pos_json_loc = base_save_location / 'pos.json'
+pos_json = json.load(open(str(pos_json_loc), 'r', encoding='utf-8'))
+
+word_json_loc = base_save_location / 'word.json'
+word_json = json.load(open(str(word_json_loc), 'r', encoding='utf-8'))
+
+lemma_json_loc = base_save_location / 'lemma.json'
+lemma_json = json.load(open(str(lemma_json_loc), 'r', encoding='utf-8'))
+
+word_lemma_json_loc = base_save_location / 'word_lemma.json'
+word_lemma_json = json.load(open(str(word_lemma_json_loc), 'r', encoding='utf-8'))
+
+constant_grammar = ('ABR', 'NAM', 'NOM', 'PUN', 'PUN:cit', 'SENT', 'SYM')
+pronoun_grammar = ('PRO:DEM', 'PRO:IND', 'PRO:PER', 'PRO:POS', 'PRO:REL')
+verb_grammar = ('VER:infi', 'VER:pres', 'VER:futu', 'VER:simp', 'VER:impe',
+                'VER:impf', 'VER:cond', 'VER:pper', 'VER:ppre', 'VER:subi', 'VER:subp')
 
 
 def min_length_qualify(line):
@@ -209,7 +231,7 @@ class Grammar(Changes):
     and hence the abstractmethod `make_choice()` from base class will be responsible in
     identifying this structure. This might not the case for every error (like spelling errors, absent words) and
     hence a probabilistic framework is also required similar to `Sequence`'s `make_choice()` in order
-    to have an equal (or appropiate) amount of mistakes in the data for the model.
+    to have an equal (or appropriate) amount of mistakes in the data for the model.
 
     This is a subclass to `Changes` and has all the restrictions that `Sequence` had.
     """
@@ -255,5 +277,5 @@ class Grammar(Changes):
         pass
 
     def extra_words(self):
-        """ Add extra, unnessary words"""
+        """ Add extra, unnecessary words"""
         pass

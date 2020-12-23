@@ -47,7 +47,8 @@ def convert(tag_loc=Path("data/sample_tagged.txt"), lemma_json_loc=Path("data/le
         json.dump(lemma_dict, jfile, ensure_ascii=False, indent=4)
         print("Done with Creating word_lemma file.")
 
-    try:
-        tag_loc.unlink()
-    except OSError:
-        print("Shouldn't reach here but anyways.. {} not deleted".format(tag_loc))
+    if delete_residue:
+        try:
+            tag_loc.unlink()
+        except OSError:
+            print("Shouldn't reach here but anyways.. {} not deleted".format(tag_loc))

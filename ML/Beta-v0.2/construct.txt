@@ -26,4 +26,29 @@ Or one can also use one-hot encoded data:
 none = [1,0,0,0,0,0,0,0,0,0]
 seq  = [0,1,0,0,0,0,0,0,0,0]
 and so on...
-This would change label from a single dimensional tuple to two dimension (np/torch)array
+This would change label from a single dimensional tuple to two dimension (np/torch)array.
+
+
+EDIT(23/12/2020) GRAMMAR CHANGING STRATEGY:
+1) There are 5 intensity levels as before. It goes from 0(least) to 4(most).
+2) For every word in every intensity do either of the following with probability of x and y for a and b respectively:
+    a) get POS from `word.json` for that word then from `pos.json` replace with a random word in the same POS.
+    b) get lemma from `word_lemma.json` for that word then from `lemma.json` replace with a random word in the same lemma.
+        -if no lemma present then fall back to previous method (a)
+        -for certain lemmas (prepositions and verbs), exchange them inter-lemmas than intra-lemmas.
+3) The word taken at random needs to not be of certain POS which is labeled as `constant_grammar` in `construct.py`.
+   If the word happens to belong to an element in that list then re-sample for new word.
+
+4) Intensity division goes as the following: (8-9-18-28-37) probabilities. Mostly similar to Sequential changes.
+    Level 4: Involves randomly changing 50% of the words in the sentence.
+    Level 3: Involves randomly changing 25% of the words in the sentence.
+    Level 2: Involves randomly changing 10% of the words in the sentence.
+    Level 1: Involves randomly changing:
+        -> If length of sentence is > 40 words: randomly change 2*2 words in both [0, length//2] and [length//2, lemgth]
+        -> If length of sentence is 21-40 words: randomly change 1*2 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
+        -> If length of sentence is 10-20 words: randomly change 1*2 words in both halves
+        -> If length of sentence is < 10 words: randomly change any 2 words.
+    Level 0: Involves randomly changing:
+        -> If length of sentence is >40 words: randomly change 2*1 words in both [0, length//2] and [length//2, length]
+        -> If length of sentence is 21-40 words: randomly change 1*1 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
+        -> If length of sentence is <15 words: misplace 1 word.

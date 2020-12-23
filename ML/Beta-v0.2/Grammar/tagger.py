@@ -24,10 +24,12 @@ def convert(input_file, output_file=Path("data/sample_tagged.txt"),
     print("Done and saved to ", output_file)
 
     print("Deleting single word/line file..")
-    try:
-        input_file.unlink()
-    except OSError:
-        print("Shouldn't reach here but anyways.. {} not deleted".format(input_file))
+
+    if delete_residue:
+        try:
+            input_file.unlink()
+        except OSError:
+            print("Shouldn't reach here but anyways.. {} not deleted".format(input_file))
 
 
 # if __name__ == '__main__':
