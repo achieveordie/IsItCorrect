@@ -44,11 +44,12 @@ EDIT(23/12/2020) GRAMMAR CHANGING STRATEGY:
     Level 3: Involves randomly changing 25% of the words in the sentence.
     Level 2: Involves randomly changing 10% of the words in the sentence.
     Level 1: Involves randomly changing:
-        -> If length of sentence is > 40 words: randomly change 2*2 words in both [0, length//2] and [length//2, lemgth]
+        -> If length of sentence is > 40 words: randomly change 2*2 words in both [0, length//2] and [length//2, length]
         -> If length of sentence is 21-40 words: randomly change 1*2 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
         -> If length of sentence is 10-20 words: randomly change 1*2 words in both halves
         -> If length of sentence is < 10 words: randomly change any 2 words.
     Level 0: Involves randomly changing:
         -> If length of sentence is >40 words: randomly change 2*1 words in both [0, length//2] and [length//2, length]
         -> If length of sentence is 21-40 words: randomly change 1*1 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
-        -> If length of sentence is <15 words: misplace 1 word.
+        -> If length of sentence is 10-20 words: misplace 2 words.
+        -> If length of sentence is < 10 words: randomly change any 1 word.

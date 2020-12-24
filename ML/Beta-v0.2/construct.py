@@ -86,7 +86,7 @@ class Sequence(Changes):
         :return: None
         """
         super(Sequence, self).make_change()
-        if self.choice is not None: # need to ensure we don't call this method more than once
+        if self.choice is not None:  # need to ensure we don't call this method more than once
             print("Changes have already been made, call `changed` attribute to get changed sentence")
         else:
             self.make_choice()
@@ -237,45 +237,87 @@ class Grammar(Changes):
     """
     def __init__(self, line):
         self.correct = line[7:-5]
-        self.changed = None
+        self.changed = line[7:-5].split(" ")
+        self.length = len(self.changed)
         self.choice = None
+        self.words = {}
 
     def make_choice(self):
         super(Grammar, self).make_choice()
-        pass
+        self.choice = random.choices([0, 1, 2, 3, 4], weights=[37, 28, 18, 9, 8], k=1)[0]
 
     def make_change(self):
         super(Grammar, self).make_change()
-        pass
+        self.make_choice()
+        if self.choice == 0:
+            self.intensity_0()
+        elif self.choice == 1:
+            self.intensity_1()
+        elif self.choice == 2:
+            self.intensity_2()
+        elif self.choice == 3:
+            self.intensity_3()
+        else:
+            self.intensity_4()
 
-    def tense(self):
-        """ Changing tense of some part of text"""
-        pass
+    def choose_word(self, percent_of_words, end_range, start_range=0):
+        """
+        Choose `percent_of_words` words at random from `self.changed` and
+        store it in self.words as {index:word}
+        :param end_range: what's the last index(wrt the length) to sample from?
+        :param start_range: what's the first index to sample from? default to 0.
+        :param percent_of_words: <float/int> if float then between 0.0 and 1.0, denotes percent of words to select.
+                                 If int then denotes number of words to select.
+        :return: None, changes are made in self.words
+        """
+        assert start_range < end_range <= self.length, "range limit broken."
+        if type(percent_of_words) == float:
+            assert 0.0 < percent_of_words < 1.0, "float value should be between 0 and 1 "
+            number_of_words = int(self.length * percent_of_words)
+            indices = random.sample(range(start_range, end_range), k=number_of_words)
+            for i in indices:
+                self.words[i] = self.changed[i]
+        elif type(percent_of_words) == int:
+            assert self.length > percent_of_words, "percent_of_words are more than length in the sentence"
+            assert percent_of_words > 0, "A negative percent_of_words value encountered."
+            indices = random.sample(range(start_range, end_range), k=percent_of_words)
+            for i in indices:
+                self.words[i] = self.changed[i]
+        else:
+            raise (ValueError, "percent_of_words should either be an int or float got {}".format(type(percent_of_words)))
 
-    def gender(self):
-        """ Changing gender of objects/people"""
-        pass
+    def intensity_0(self):
+        if self.length >= 40:
+            self.choose_word(percent_of_words=2, end_range=self.length//2)
+            self.choose_word(percent_of_words=2, start_range=self.length//2, end_range=self.length)
+        elif 40 > self.length > 20:
+            self.choose_word(percent_of_words=1, end_range=self.length//3)
+            self.choose_word(percent_of_words=1, start_range=self.length//3, end_range=2*self.length//3)
+            self.choose_word(percent_of_words=1, start_range=2*self.length//3, end_range=self.length//3)
+        elif 20 >= self.length > 10:
+            self.choose_word(percent_of_words=2, end_range=self.length)
+        else:
+            self.choose_word(percent_of_words=1, end_range=self.length)
 
-    def person(self):
-        """ Changing pov """
-        pass
+    def intensity_1(self):
+        if self.length >= 40:
+            self.choose_word(percent_of_words=4, end_range=self.length//2)
+            self.choose_word(percent_of_words=4, start_range=self.length//2, end_range=self.length)
+        elif 40 > self.length > 20:
+            self.choose_word(percent_of_words=2, end_range=self.length//3)
+            self.choose_word(percent_of_words=2, start_range=self.length//3, end_range=2*self.length//3)
+            self.choose_word(percent_of_words=2, start_range=2*self.length//3, end_range=self.length)
+        elif 20 >= self.length > 10:
+            self.choose_word(percent_of_words=2, end_range=self.length//2)
+            self.choose_word(percent_of_words=2, start_range=self.length//2, end_range=self.length)
+        else:
+            self.choose_word(percent_of_words=2, end_range=self.length)
 
-    def consistent(self):
-        """ Changing consistency plural """
-        pass
+    def intensity_2(self):
+        self.choose_word(percent_of_words=0.1, end_range=self.length)
 
-    def wrong_words(self):
-        """ Adding wrong words """
-        pass
+    def intensity_3(self):
+        self.choose_word(percent_of_words=0.25, end_range=self.length)
 
-    def absent_words(self):
-        """ Remove some words """
-        pass
-
-    def spelling_errors(self):
-        """ create errors in spellings """
-        pass
-
-    def extra_words(self):
-        """ Add extra, unnecessary words"""
-        pass
+    def intensity_4(self):
+        self.choose_word(percent_of_words=0.5, end_range=self.length)
