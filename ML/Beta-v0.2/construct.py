@@ -22,7 +22,8 @@ lemma_json = json.load(open(str(lemma_json_loc), 'r', encoding='utf-8'))
 word_lemma_json_loc = base_save_location / 'word_lemma.json'
 word_lemma_json = json.load(open(str(word_lemma_json_loc), 'r', encoding='utf-8'))
 
-constant_grammar = ('ABR', 'NAM', 'NOM', 'PUN', 'PUN:cit', 'SENT', 'SYM')
+constant_grammar = ('ABR', 'NAM', 'PUN', 'PUN:cit', 'SENT', 'SYM')
+inter_pos = ('PRO', 'VER')
 pronoun_grammar = ('PRO:DEM', 'PRO:IND', 'PRO:PER', 'PRO:POS', 'PRO:REL')
 verb_grammar = ('VER:infi', 'VER:pres', 'VER:futu', 'VER:simp', 'VER:impe',
                 'VER:impf', 'VER:cond', 'VER:pper', 'VER:ppre', 'VER:subi', 'VER:subp')
@@ -241,6 +242,7 @@ class Grammar(Changes):
         self.length = len(self.changed)
         self.choice = None
         self.words = {}
+        self.unchangeable = False
 
     def make_choice(self):
         super(Grammar, self).make_choice()
@@ -259,6 +261,50 @@ class Grammar(Changes):
             self.intensity_3()
         else:
             self.intensity_4()
+
+    def remove_words_if_necessary(self):
+        """
+        There is a global `constant_grammar` list. These are the POSs that are not to be altered.
+        Remove such entries.
+        :return: None, changes are being made in `words` attribute (if necessary).
+        """
+        keys_to_remove = []
+        for index, word in self.words.items():
+            if word_json[word] in constant_grammar:
+                keys_to_remove.append(index)
+
+        for key in keys_to_remove:
+            del self.words[key]
+
+    def change_words_from_POS(self, single_pair=None):
+        """
+        After we have accumulated words that are to be changed, change them using their POS.
+        If POS belong either to global `inter_pos` then change them within pos,
+        :param single_pair: If this is not None that means we only want to alter single word and single pair
+                            will be a dict of {index:word}, this is the case when lemma of a word doesn't exist so it
+                            falls back to using this method.
+        :return: None, changes are being made in `changed` attribute.
+        """
+        if single_pair is not None:
+            pos = word_json[single_pair["word"]]
+            if pos[0:3] in inter_pos:
+                pass
+            else:
+                self.changed[single_pair["index"]] = random.choice(pos_json[pos])
+        else:
+            for index, word in self.words.items():
+                self.changed[index] = random.choice(pos_json[word_json[word]])
+
+    def change_words_from_lemma(self):
+        """
+        Read change_words_from_POS, but for lemmas.
+        :return: None, changes are being made in `changed` attribute.
+        """
+        for index, word in self.words.items():
+            try:
+                self.changed[index] = random.choice(lemma_json[word_lemma_json[word]])
+            except KeyError:
+                self.change_words_from_POS(single_pair={"index": index, "word": word})
 
     def choose_word(self, percent_of_words, end_range, start_range=0):
         """
@@ -298,6 +344,20 @@ class Grammar(Changes):
             self.choose_word(percent_of_words=2, end_range=self.length)
         else:
             self.choose_word(percent_of_words=1, end_range=self.length)
+
+        tries = 2
+        while tries >= 0:
+            self.remove_words_if_necessary()
+            tries -= 1
+            if self.words is not None:
+                break
+        if tries == 0:
+            self.unchangeable = True
+
+        if not self.unchangeable:
+            choice = random.choices([0, 1], weights=[40, 60], k=1)[0]  # 0 for pos, 1 for lemma
+            if choice == 0:
+                pass  # Do I want to make this a choice, or should I alter by combining both?
 
     def intensity_1(self):
         if self.length >= 40:
