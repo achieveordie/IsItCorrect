@@ -53,3 +53,5 @@ EDIT(23/12/2020) GRAMMAR CHANGING STRATEGY:
         -> If length of sentence is 21-40 words: randomly change 1*1 words in [0, length//3], [length//3, 2*length//3], [2*length//3, length]
         -> If length of sentence is 10-20 words: misplace 2 words.
         -> If length of sentence is < 10 words: randomly change any 1 word.
+
+5) Edit(01/01/2021): 20-30-50 probability of changing grammar using POS, lemma, both respectively.
