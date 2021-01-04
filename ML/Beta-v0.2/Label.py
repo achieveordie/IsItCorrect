@@ -1,8 +1,9 @@
 from tabulate import tabulate
 import re
-from construct import min_length_qualify, Sequence
+from construct import min_length_qualify, Sequence, Grammar
 from pathlib import Path
 import pickle
+import logging
 
 
 def labelify(correct, changed):
@@ -235,21 +236,31 @@ def make_unlabel(label):
 
 # The following are some try-run cases
 if __name__ == "__main__":
+    logger_location = "log.log"
+    logging.basicConfig(filename=logger_location, level=logging.INFO)
     testing_file_location = Path("sample_text.txt")
     pattern = re.compile("<START>.*?<END>")
     db_train = {}
     db_test = {}
-    with open(str(testing_file_location), 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        lines = pattern.findall(lines[0])
+    # with open(str(testing_file_location), 'r', encoding='utf-8') as file:
+    #     lines = file.readlines()
+    #     lines = pattern.findall(lines[0])
+    #     total_lines = len(lines)
+    #     print("Total Number of lines are ", total_lines)
+
+    with open('donkey.txt', 'r', encoding='utf-8') as file:
+        lines = file.read().splitlines()
         total_lines = len(lines)
-        print("Total Number of lines are ", total_lines)
 
         index = 0               # cheap tricks to store correct and changed sentence one after the other
         start_from_pos = 0      # while ensuring there is a 80-20 train-test split.
-        for line in lines:
+        for i, line in enumerate(lines):
             # Here Randomize between `Sequence` and `Grammar` when `Grammar` is defined
-            sample = Sequence(line)
+            sample = None
+            if i % 2 == 0:
+                sample = Grammar(line)
+            else:
+                sample = Sequence(line)
             if min_length_qualify(sample.correct):
                 sample.make_change()
 

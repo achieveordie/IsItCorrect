@@ -1,13 +1,11 @@
 import json
 from pathlib import Path
-import re
 import random
-import pickle
 from abc import ABC, abstractmethod
-
+import logging
 
 # Opening some files for Grammar:
-base_save_location = Path.cwd() / 'data'
+base_save_location = Path.cwd() / 'Grammar' / 'data'
 # base_save_location = Path("D:/Datasets/IsItCorrect/temp")
 
 pos_json_loc = base_save_location / 'pos.json'
@@ -24,9 +22,8 @@ word_lemma_json = json.load(open(str(word_lemma_json_loc), 'r', encoding='utf-8'
 
 constant_grammar = ('ABR', 'NAM', 'PUN', 'PUN:cit', 'SENT', 'SYM')
 # inter_pos = ('PRO', 'VER')
-pronoun_grammar = ('PRO:DEM', 'PRO:IND', 'PRO:PER', 'PRO:POS', 'PRO:REL')
-verb_grammar = ('VER:infi', 'VER:pres', 'VER:futu', 'VER:simp', 'VER:impe',
-                'VER:impf', 'VER:cond', 'VER:pper', 'VER:ppre', 'VER:subi', 'VER:subp')
+pronoun_grammar = [pos for pos in pos_json.keys() if pos[0:3] == "PRO"]
+verb_grammar = [pos for pos in pos_json.keys() if pos[0:3] == "VER"]
 
 
 def min_length_qualify(line):
@@ -314,10 +311,10 @@ class Grammar(Changes):
         if single_pair is not None:
             pos = word_json[single_pair["word"]]
             if pos[0:3] == 'PRO':
-                which_pos = random.randrange(stop=len(pronoun_grammar))
+                which_pos = random.randrange(start=0, stop=len(pronoun_grammar))
                 self.changed[single_pair["index"]] = random.choice(pos_json[pronoun_grammar[which_pos]])
             elif pos[0:3] == 'VER':
-                which_pos = random.randrange(stop=len(verb_grammar))
+                which_pos = random.randrange(start=0, stop=len(verb_grammar))
                 self.changed[single_pair["index"]] = random.choice(pos_json[pronoun_grammar[which_pos]])
             else:
                 self.changed[single_pair["index"]] = random.choice(pos_json[pos])
@@ -325,10 +322,10 @@ class Grammar(Changes):
             for index, word in self.words.items():
                 pos = word_json[word]
                 if pos[0:3] == 'PRO':
-                    which_pos = random.randrange(stop=len(pronoun_grammar))
+                    which_pos = random.randrange(start=0, stop=len(pronoun_grammar))
                     self.changed[index] = random.choice(pos_json[pronoun_grammar[which_pos]])
                 elif pos[0:3] == 'VER':
-                    which_pos = random.randrange(stop=len(pronoun_grammar))
+                    which_pos = random.randrange(start=0, stop=len(pronoun_grammar))
                     self.changed[index] = random.choice(pos_json[pronoun_grammar[which_pos]])
                 else:
                     self.changed[index] = random.choice(pos_json[word_json[word]])
@@ -371,13 +368,14 @@ class Grammar(Changes):
         elif 40 > self.length > 20:
             self.choose_word(percent_of_words=1, end_range=self.length//3)
             self.choose_word(percent_of_words=1, start_range=self.length//3, end_range=2*self.length//3)
-            self.choose_word(percent_of_words=1, start_range=2*self.length//3, end_range=self.length//3)
+            self.choose_word(percent_of_words=1, start_range=2*self.length//3, end_range=self.length)
         elif 20 >= self.length > 10:
             self.choose_word(percent_of_words=2, end_range=self.length)
         else:
             self.choose_word(percent_of_words=1, end_range=self.length)
 
         self.do_changes()
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_1(self):
         if self.length >= 40:
@@ -394,18 +392,22 @@ class Grammar(Changes):
             self.choose_word(percent_of_words=2, end_range=self.length)
 
         self.do_changes()
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_2(self):
         self.choose_word(percent_of_words=0.1, end_range=self.length)
 
         self.do_changes()
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_3(self):
         self.choose_word(percent_of_words=0.25, end_range=self.length)
 
         self.do_changes()
+        self.changed = " ".join(self.changed).lstrip()
 
     def intensity_4(self):
         self.choose_word(percent_of_words=0.5, end_range=self.length)
 
         self.do_changes()
+        self.changed = " ".join(self.changed).lstrip()
