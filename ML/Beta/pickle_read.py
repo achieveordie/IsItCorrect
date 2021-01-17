@@ -1,5 +1,4 @@
 import pickle
-from pprint import pprint
 
 
 pickle_location = r"D:\Datasets\IsItCorrect\beta_sample_train_small.pkl"

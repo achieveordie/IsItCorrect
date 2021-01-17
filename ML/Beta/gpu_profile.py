@@ -22,6 +22,7 @@ func_name = None
 filename = None
 module_name = None
 
+
 def gpu_profile(frame, event):
     global last_meminfo_used, last_tensor_sizes
     global lineno, func_name, filename, module_name

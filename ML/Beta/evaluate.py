@@ -24,7 +24,7 @@ def load_data():
     return testloader
 
 
-def calculate_f_beta(tp, fp, tn, fn, beta=0.5):
+def calculate_f_beta(tp, fp, fn, beta=0.5):
     precision = tp/(tp + fp)
     recall = tp/(tp + fn)
     return ((1 + beta**2)*precision*recall)/((precision * beta**2) + recall)
@@ -41,8 +41,6 @@ def evaluate():
     print("Starting Evaluation")
     total = 0
     for data in tqdm(iter_loader):
-        # print("Data going in: ")
-        # print(data['sentence'])
 
         data["sentence"] = tokenizer(data["sentence"], padding=True, max_length=512)
         data["sentence"]["input_ids"] = list(map(lambda x: x[:512], data["sentence"]["input_ids"]))
@@ -52,12 +50,6 @@ def evaluate():
         data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                           device=cuda0)
 
-        # data["sentence"] = tokenizer(data["sentence"], padding=True)
-        # data["sentence"]["input_ids"] = torch.tensor(data["sentence"]["input_ids"],
-        #                                              dtype=torch.long, device=cuda0)
-        # data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
-        #                                                   device=cuda0)
-
         output = model(data["sentence"]["input_ids"], data["sentence"]["attention_mask"])
 
         # For all data in 1 batch (Here 2 datasets are present in a single batch)
@@ -66,12 +58,9 @@ def evaluate():
             output = softmax(output)
             actual = data["label"][i].item()
             pred = torch.argmax(output[i]).item()
-            # print("Label : {}, Prediction: {}, with Probability= {}".format(data["label"][i].item(),
-            #                                                                 pred,
-            #                                                                 output[i][pred].item()*100.0))
             if pred == actual:
                 correct += 1
-            if actual: # if 1
+            if actual:  # if 1
                 if pred:
                     tp += 1
                 else:

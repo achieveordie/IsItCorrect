@@ -27,9 +27,6 @@ def get_data(location):
     trainloader = DataLoader(train, batch_size=32, shuffle=False)
 
     return trainloader
-# for i in iter(trainloader):
-#     print(i)
-#     break
 
 
 def get_pickle_location(train=True):

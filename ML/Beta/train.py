@@ -18,13 +18,10 @@ save_model_location = r"D:\Datasets\IsItCorrect\model"
 
 def train(epoch, x, actual):
 
-    # ids = x["input_ids"]
-    # attention_mask = x["attention_mask"]
-    # print(torch.cuda.memory_allocated(), "\t", torch.cuda.max_memory_allocated())
     outputs = model(x["input_ids"], x["attention_mask"])
     optimizer.zero_grad()
     loss = criterion(outputs, actual)
-    #print(loss)
+
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
@@ -48,19 +45,10 @@ def epochs(num_epochs, trainloader):
             data["sentence"]["attention_mask"] = torch.tensor(data["sentence"]["attention_mask"],
                                                               device=cuda0)
 
-
-            #data["label"] = torch.tensor(data["label"], device=cuda0)
             data["label"] = data["label"].clone().detach().requires_grad_(False).cuda()
 
             loss = train(epoch, data["sentence"], data["label"])
             del data["sentence"]["input_ids"], data["sentence"]["attention_mask"]
-            #print("----------------SPOT-2------------------------------")
-            # for obj in gc.get_objects():
-            #     try:
-            #         if torch.is_tensor(obj) or (hasattr(obj, "data") and torch.is_tensor(obj["data"])):
-            #             print(type(obj), obj.size())
-            #     except:
-            #         pass
 
             if counter % 1000 == 0:
                 print(loss)
@@ -75,7 +63,6 @@ def epochs(num_epochs, trainloader):
             del data["sentence"], data["label"]
             torch.cuda.empty_cache()
             gc.collect()
-            # print("----------------SPOT-3------------------------------")
 
         time_end_epoch = time.time()
         print("Done for Epoch number {}, with time {}".format(epoch + 1, time_end_epoch-time_start_epoch))
@@ -93,8 +80,3 @@ if __name__ == '__main__':
     epochs(25, trainloader)
     time_end = time.time()
     print("Total Time Taken For training: ", time_end - time_start)
-
-    # print("Now begins the evaluation: ")
-    # time_eval_start = time.time()
-
-

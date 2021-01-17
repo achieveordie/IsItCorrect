@@ -214,13 +214,6 @@ if __name__ == '__main__':
         label_0 = store_label0(lines)
         lines = None
 
-        # print("Label_0 length", len(label_0))
-        # print("Label_1 length", len(label_1))
-        # print("----------------------------")
-        # print("Here's some examples from each:")
-        # for i in range(15):
-        #     print("label_0 {}:".format(i), label_0[i])
-        #     print("label_1 {}:".format(i), label_1[i])
     assert len(label_0) == len(label_1)  # should have equal length
     db_train = {}
     db_validate = {}
@@ -232,10 +225,6 @@ if __name__ == '__main__':
 
         pickle.dump(db_train, file)
 
-        # for i in range(0, len(db_train)-1, 2):
-        #     print(db_train[i])
-        #     print(db_train[i+1])
-        #     print("\n\n")
     db_train = {}
     with closing(open(Path(save_validate_pickle_location),
                       "ab")) as file:
