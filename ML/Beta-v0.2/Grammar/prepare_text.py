@@ -34,9 +34,3 @@ def convert(input_file, output_file=Path('data/sample_output.txt')):
                         [file.write(broke + '\n') for broke in broken]
                         # file.write(word+'\n')
     print("Converted to {}".format(str(output_file)))
-
-
-# if __name__ == "__main__":
-#     print(Path.cwd())
-#     file_location = Path('D:/IIC/IIC-ML/ML/Beta-v0.2/sample_text.txt')
-#     convert(file_location)

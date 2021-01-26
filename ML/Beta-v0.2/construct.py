@@ -4,6 +4,8 @@ import random
 from abc import ABC, abstractmethod
 import logging
 
+random.seed(0)
+
 # Opening some files for Grammar:
 base_save_location = Path.cwd() / 'Grammar' / 'data'
 # base_save_location = Path("D:/Datasets/IsItCorrect/temp")
@@ -293,8 +295,11 @@ class Grammar(Changes):
         """
         keys_to_remove = []
         for index, word in self.words.items():
-            if word_json[word] in constant_grammar:
-                keys_to_remove.append(index)
+            try:
+                if word_json[word] in constant_grammar:
+                    keys_to_remove.append(index)
+            except KeyError:
+                logging.info(word)
 
         for key in keys_to_remove:
             del self.words[key]
@@ -309,18 +314,26 @@ class Grammar(Changes):
         :return: None, changes are being made in `changed` attribute.
         """
         if single_pair is not None:
-            pos = word_json[single_pair["word"]]
+            try:
+                pos = word_json[single_pair["word"]]
+            except KeyError:
+                logging.info(single_pair["word"])
+                return None
             if pos[0:3] == 'PRO':
                 which_pos = random.randrange(start=0, stop=len(pronoun_grammar))
                 self.changed[single_pair["index"]] = random.choice(pos_json[pronoun_grammar[which_pos]])
             elif pos[0:3] == 'VER':
                 which_pos = random.randrange(start=0, stop=len(verb_grammar))
-                self.changed[single_pair["index"]] = random.choice(pos_json[pronoun_grammar[which_pos]])
+                self.changed[single_pair["index"]] = random.choice(pos_json[verb_grammar[which_pos]])
             else:
                 self.changed[single_pair["index"]] = random.choice(pos_json[pos])
         else:  # method was invoked after `change_words_from_lemma` failed.
             for index, word in self.words.items():
-                pos = word_json[word]
+                try:
+                    pos = word_json[word]
+                except KeyError:
+                    logging.info(word)
+                    return None
                 if pos[0:3] == 'PRO':
                     which_pos = random.randrange(start=0, stop=len(pronoun_grammar))
                     self.changed[index] = random.choice(pos_json[pronoun_grammar[which_pos]])
