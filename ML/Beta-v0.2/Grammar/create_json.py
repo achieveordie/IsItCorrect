@@ -17,20 +17,26 @@ def convert(tag_loc=Path('data/sample_tagged.txt'),
         lines = [line.split('\t') for line in lines]
 
     with open(tag_json_loc, 'w', encoding='utf-8') as jfile:
-        for i, (w, t, _) in enumerate(lines):
-            try:
-                tag_dict[t].append(w)
-            except KeyError:
-                tag_dict[t] = []
-                tag_dict[t].append(w)
+        try:
+            for i, (w, t, _) in enumerate(lines):
+                try:
+                    tag_dict[t].append(w)
+                except KeyError:
+                    tag_dict[t] = []
+                    tag_dict[t].append(w)
+        except ValueError:
+            pass
 
         for key in tag_dict.keys():
             tag_dict[key] = list(set(tag_dict[key]))  # remove same entries
         json.dump(tag_dict, jfile, ensure_ascii=False, indent=4)
         print("We're done for tags, folks.")
     with open(word_json_loc, 'w', encoding='utf-8') as jfile:
-        for (w, t, _) in lines:
-            word_dict[w] = t
+        try:
+            for (w, t, _) in lines:
+                word_dict[w] = t
+        except ValueError:
+            pass
         json.dump(word_dict, jfile, ensure_ascii=False, indent=4)
         print("We're done for words, folks.")
 

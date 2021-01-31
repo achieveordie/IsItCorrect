@@ -21,12 +21,15 @@ def convert(tag_loc=Path("data/sample_tagged.txt"), lemma_json_loc=Path("data/le
         lines = [line.split('\t') for line in lines]
 
     with open(str(lemma_json_loc), 'w', encoding='utf-8') as jfile:
-        for (word, _, lemma) in lines:
-            try:
-                lemma_dict[lemma].append(word)
-            except KeyError:
-                lemma_dict[lemma] = []
-                lemma_dict[lemma].append(word)
+        try:
+            for (word, _, lemma) in lines:
+                try:
+                    lemma_dict[lemma].append(word)
+                except KeyError:
+                    lemma_dict[lemma] = []
+                    lemma_dict[lemma].append(word)
+        except ValueError:
+            pass
 
         # We will have nouns prepositions etc who's lemma is not useful.
         to_delete = []
@@ -41,14 +44,18 @@ def convert(tag_loc=Path("data/sample_tagged.txt"), lemma_json_loc=Path("data/le
 
     lemma_dict = {}
     with open(str(word_lemma_json_loc), 'w', encoding='utf-8') as jfile:
-        for (word, _, lemma) in lines:
+        try:
+            for (word, _, lemma) in lines:
 
-            lemma_dict[word] = lemma
+                lemma_dict[word] = lemma
+        except ValueError:
+            pass
         json.dump(lemma_dict, jfile, ensure_ascii=False, indent=4)
         print("Done with Creating word_lemma file.")
 
     if delete_residue:
         try:
+            print("Deleting tagged file")
             tag_loc.unlink()
         except OSError:
             print("Shouldn't reach here but anyways.. {} not deleted".format(tag_loc))
